@@ -1,0 +1,22 @@
+<section>
+  <div>
+    <p>{{ questionNumber }}. {{ questionTitle }}</p>
+    <p [class.display-none]="!questionMoreAnswers">More than one answers are possible.</p>
+  </div>
+  <div class="answers">
+    @for (item of questions; track $index; let i = $index) {
+      <div>
+        <app-checkbox-component
+          [answer]="item"
+          [disabled]="disabled"
+          [checkedCheckbox]="!questionMoreAnswers && selectedAnswer === item.id"
+          (checkedChange)="onSingleAnswerSelected($event, item.id)"
+        >
+          <p>
+            <span>{{ getLetterFromNumber(i) }}. </span>{{ item.text }}
+          </p>
+        </app-checkbox-component>
+      </div>
+    }
+  </div>
+</section>

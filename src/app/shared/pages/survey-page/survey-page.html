@@ -1,0 +1,110 @@
+@if (survey) {
+  <div class="survey wrapper">
+    <div class="survey-header">
+      <app-header-component (click)="goHome()" logoColor="dark"></app-header-component>
+      <app-primary-button-component (click)="goCreate()" icon="add"
+        >Create survey</app-primary-button-component
+      >
+    </div>
+
+    <div class="swrapper">
+      <section class="survey-answer-container">
+        <div class="survey-answers">
+          <div class="survey-answer-info">
+            <div>
+              <app-survery-status-component [color]="'deep'" [class.shake]="shake">
+                {{ pastSurvey ? 'Done' : 'Published' }}
+              </app-survery-status-component>
+              <app-secondary-button-component
+                [width]="40"
+                [class.display-none]="screenWidth > 1600"
+                (click)="goHome()"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6.575 7.975L1.675 12.875C1.49167 13.0583 1.25833 13.15 0.975 13.15C0.691667 13.15 0.458333 13.0583 0.275 12.875C0.0916667 12.6917 0 12.4583 0 12.175C0 11.8917 0.0916667 11.6583 0.275 11.475L5.175 6.575L0.275 1.675C0.0916667 1.49167 0 1.25833 0 0.975C0 0.691667 0.0916667 0.458333 0.275 0.275C0.458333 0.0916667 0.691667 0 0.975 0C1.25833 0 1.49167 0.0916667 1.675 0.275L6.575 5.175L11.475 0.275C11.6583 0.0916667 11.8917 0 12.175 0C12.4583 0 12.6917 0.0916667 12.875 0.275C13.0583 0.458333 13.15 0.691667 13.15 0.975C13.15 1.25833 13.0583 1.49167 12.875 1.675L7.975 6.575L12.875 11.475C13.0583 11.6583 13.15 11.8917 13.15 12.175C13.15 12.4583 13.0583 12.6917 12.875 12.875C12.6917 13.0583 12.4583 13.15 12.175 13.15C11.8917 13.15 11.6583 13.0583 11.475 12.875L6.575 7.975Z"
+                    fill="#35273A"
+                  />
+                </svg>
+              </app-secondary-button-component>
+            </div>
+            <div>
+              <p>Ends on {{ getEndDate() }}</p>
+              <p>Category: {{ survey.category }}</p>
+            </div>
+          </div>
+          <div class="survey-headline">
+            <p>{{ survey.headline }}</p>
+            <p>{{ survey.description }}</p>
+          </div>
+          <div class="survey-answer-list" (click)="pastSurveyInfo()">
+            @for (item of questions; track item; let i = $index) {
+              <app-question-answer-component
+                [disabled]="pastSurvey"
+                [questionNumber]="i + 1"
+                [questionTitle]="item.question_headline"
+                [questionMoreAnswers]="item.multiple_choice"
+                [questions]="
+                  answers
+                    .filter((a) => a.question_id === item.id)
+                    .map((a) => ({ text: a.answer_text, id: a.id }))
+                "
+              ></app-question-answer-component>
+            }
+            <div class="completeSurvey" [class.display-none]="pastSurvey">
+              <app-primary-button-component [icon]="'check'" (click)="completeSurvey()"
+                >Complete Survey</app-primary-button-component
+              >
+            </div>
+          </div>
+          <div></div>
+        </div>
+      </section>
+
+      <section class="survey-results" [style.height]="responsivOpenCloseToggle ? '750px' : '70px'">
+        <div class="OpenCloseResults" (click)="toggle()">
+          <p>{{ responsivOpenCloseToggle === true ? 'Close results' : 'Open results' }}</p>
+          <svg
+            [class.rotate]="responsivOpenCloseToggle"
+            width="15"
+            height="8"
+            viewBox="0 0 15 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.5843 7.61702L0.261628 1.44681C0.174419 1.3617 0.109012 1.2695 0.065407 1.17021C0.0218023 1.07092 0 0.964539 0 0.851064C0 0.624114 0.0799419 0.425532 0.239826 0.255319C0.399709 0.0851064 0.610465 0 0.872093 0H14.1279C14.3895 0 14.6003 0.0851064 14.7602 0.255319C14.9201 0.425532 15 0.624114 15 0.851064C15 0.907802 14.9128 1.10638 14.7384 1.44681L8.4157 7.61702C8.27035 7.75887 8.125 7.85816 7.97965 7.91489C7.8343 7.97163 7.67442 8 7.5 8C7.32558 8 7.1657 7.97163 7.02035 7.91489C6.875 7.85816 6.72965 7.75887 6.5843 7.61702Z"
+              fill="#35273A"
+            />
+          </svg>
+        </div>
+
+        <div [class.display-none]="!responsivOpenCloseToggle">
+          <div class="survey-results-headline">
+            <p>Survey results <span>LIVE</span></p>
+          </div>
+          <div class="survey-results-all">
+            @for (item of questions; track item; let i = $index) {
+              <app-results-component
+                [question]="i + 1 + '. ' + item.question_headline"
+                [bars]="
+                  answers
+                    .filter((a) => a.question_id === item.id)
+                    .map((a) => ({
+                      percentage: counters[item.id] ? (a.clicked / counters[item.id]) * 100 : 0,
+                    }))
+                "
+              ></app-results-component>
+            }
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+}

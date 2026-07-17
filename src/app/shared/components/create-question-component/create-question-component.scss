@@ -1,0 +1,61 @@
+section {
+  width: 90%;
+  height: auto;
+  font-family: var(--font-family-Mulish);
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-700);
+  transition: var(--transition-smooth-and-bg-025);
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 2px;
+
+  p {
+    color: white;
+    margin: 0px;
+    margin: 10px 0px;
+  }
+
+  app-tertiary-button-component {
+    margin-top: 5px;
+    margin-left: 20px;
+  }
+}
+
+
+app-checkbox-component ::ng-deep p {
+  font-size: var(--font-size-16);
+}
+.question-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.question-body {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+
+  div:first-of-type {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: start;
+    margin-bottom: 5px;
+    gap: 20px;
+  }
+}
+app-input-field-component {
+  min-width: 0;
+  display: block;
+}
+
+.answerInput {
+  width: 90%;
+}

@@ -1,0 +1,37 @@
+<section>
+  <div class="question-header">
+    <p>{{ questionNumber }}. Question</p>
+    <app-delete-button-component (click)="destroySection()"></app-delete-button-component>
+  </div>
+  <app-input-field-component
+    fieldName="QuestionTitle_{{ questionNumber }}"
+    (valueChanged)="onChildChange($event)"
+    [maxLength]="300"
+  ></app-input-field-component>
+  <div class="question-body">
+    <div>
+      <p>Answers</p>
+      <app-checkbox-component (checkedChange)="checkboxChange.emit($event)" borderColor="#FFFFF0"
+        >Allow multiple answers</app-checkbox-component
+      >
+    </div>
+    @for (item of questions; track item; let i = $index) {
+      <div>
+        <p>{{ getLetterFromNumber(i) }}.</p>
+        <app-input-field-component
+          class="answerInput"
+          fieldName="Answer_{{ questionNumber }}_{{ getLetterFromNumber(i) }}"
+          (valueChanged)="onChildChange($event)"
+          [maxLength]="300"
+        >
+        </app-input-field-component>
+        @if (i >= 2) {
+          <app-delete-button-component (click)="deleteQuestion(i)"></app-delete-button-component>
+        }
+      </div>
+    }
+    @if (questions.length < 5) {
+      <app-tertiary-button-component (click)="addQuestion()"> </app-tertiary-button-component>
+    }
+  </div>
+</section>

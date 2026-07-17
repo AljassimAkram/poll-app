@@ -1,0 +1,127 @@
+import { Component, ChangeDetectorRef, Renderer2 } from '@angular/core';
+import { PrimaryButtonComponent } from '../../components/primary-button-component/primary-button-component';
+import { HeaderComponent } from '../../components/header-component/header-component';
+import { HighlightCardComponent } from '../../components/highlight-card-component/highlight-card-component';
+import { FilterButtonComponent } from '../../components/filter-button-component/filter-button-component';
+import { DropDownComponent } from '../../components/drop-down-component/drop-down-component';
+import { SurveyViewComponent } from '../../components/survey-view-component/survey-view-component';
+import { ResultsComponent } from '../../components/results-component/results-component';
+import { SupabaseServieces } from '../../services/supabase-servieces';
+import { RouterLink, Router } from '@angular/router';
+import { GotoServieces } from '../../services/goto-servieces';
+import { CreateQuestionComponent } from '../../components/create-question-component/create-question-component';
+import { CategoriesService } from '../../services/categories-servieces';
+
+@Component({
+  selector: 'app-home-page',
+  imports: [
+    HeaderComponent,
+    PrimaryButtonComponent,
+    HighlightCardComponent,
+    FilterButtonComponent,
+    DropDownComponent,
+    SurveyViewComponent,
+    ResultsComponent,
+    RouterLink,
+    CreateQuestionComponent,
+  ],
+  templateUrl: './home-page.html',
+  styleUrl: './home-page.scss',
+})
+export class HomePage {
+  surveys: any[] = [];
+  surveysEndingSoon: any[] = [];
+
+  filter = -1;
+  activeSurveyFilter = true;
+  pastSurveyFilter = false;
+
+  constructor(
+    private supabaseService: SupabaseServieces,
+    private router: Router,
+    private goto: GotoServieces,
+    private cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
+  ) {}
+
+  /**
+   * Loads surveys on page start.
+   * Sorts and selects top ending soon surveys.
+   */
+  async ngOnInit() {
+    window.scrollTo(0, 0);
+    this.setBodyClass('home');
+    const pastSurveys: string[] = JSON.parse(localStorage.getItem('pastSurveys') || '[]');
+    this.surveys = (await this.supabaseService.getSurveys()).map((s) => ({
+      ...s,
+      daysLeft: this.getDaysLeft(s.endsDay),
+      isParticipated: pastSurveys.includes(String(s.id)),
+    }));
+    this.surveysEndingSoon = this.surveys
+      .map((s) => ({
+        ...s,
+        daysLeft: this.getDaysLeft(s.endsDay),
+      }))
+      .filter((s) => s.daysLeft >= 0)
+      .sort((a, b) => a.daysLeft - b.daysLeft)
+      .slice(0, 3);
+    this.cdr.detectChanges();
+  }
+
+  ngOnDestroy() {
+    this.removeBodyClass('home');
+  }
+
+  setBodyClass(className: string) {
+    this.renderer.addClass(document.body, className);
+  }
+
+  removeBodyClass(className: string) {
+    this.renderer.removeClass(document.body, className);
+  }
+
+  parseDate(dateStr: string): Date {
+    const [day, month, year] = dateStr.split('.');
+    return new Date(+year, +month - 1, +day);
+  }
+
+  getDaysLeft(dateStr: string): number {
+    const endDate = new Date(dateStr);
+    const today = new Date();
+
+    return Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  }
+
+  formatDate(date: string) {
+    const [y, m, d] = date.split('-');
+    return `${d}.${m}.${y}`;
+  }
+  /**
+   * Sets selected category filter.
+   */
+  onCategorySelected(id: number) {
+    this.filter = id;
+  }
+
+  /**
+   * Opens survey detail page.
+   */
+  openPage(id: number) {
+    this.router.navigate(['/survey', id]);
+  }
+
+  /**
+   * Navigates to create page.
+   */
+  goCreate() {
+    this.goto.goToCreate();
+  }
+
+  /**
+   * Toggles between active and past surveys.
+   */
+  activeOrPastSurvey() {
+    this.activeSurveyFilter = !this.activeSurveyFilter;
+    this.pastSurveyFilter = !this.activeSurveyFilter;
+  }
+}

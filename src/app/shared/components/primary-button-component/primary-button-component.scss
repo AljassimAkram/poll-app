@@ -1,0 +1,48 @@
+button {
+  height: 48px;
+  border-radius: 10px;
+  border: none;
+  padding: 0 16px;
+  font-family: var(--font-family-nokora);
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-700);
+  line-height: 1;
+  text-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--background-color-medium-yellow);
+  white-space: nowrap;
+  cursor: pointer;
+  gap: 12px;
+
+  svg {
+    display: none;
+    width: 20px;
+    height: 20px;
+
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+
+  &:hover {
+    background-color: var(--background-color-deep-yellow);
+
+    svg {
+      display: block;
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@media (max-width: 1600px) {
+  button {
+    background-color: var(--background-color-deep-yellow);
+    svg {
+      display: flex;
+      opacity: 1;
+      transform: translateX(0px);
+    }
+  }
+}

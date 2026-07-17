@@ -1,0 +1,22 @@
+button {
+  min-width: 100px;
+  width: auto;
+  height: 26px;
+  border: none;
+  border-top-right-radius: 14px;
+  font-family: var(--font-family-nokora);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-400);
+  color: var(--font-color-dark-purple);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  &.light {
+    background-color: var(--background-color-light-yellow);
+  }
+
+  &.dark {
+    background-color: var(--background-color-medium-yellow);
+  }
+}

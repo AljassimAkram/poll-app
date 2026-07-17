@@ -1,0 +1,10 @@
+<label>
+  <input
+    type="checkbox"
+    [style.border-color]="borderColor"
+    [checked]="checkedCheckbox"
+    (change)="changeValueOnDB(answer)"
+    [disabled]="disabled"
+  />
+  <p><ng-content></ng-content></p>
+</label>

@@ -1,0 +1,23 @@
+button {
+  min-width: 110px;
+  height: 25px;
+  border: none;
+  border-radius: var(--border-radius-20);
+  font-family: var(--font-family-nokora);
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-400);
+  background-color: var(--background-color-light-yellow);
+  color: var(--font-color-dark-purple);
+  transition: var(--transition-smooth-and-bg-025);
+  margin-right: 20px;
+  cursor: pointer;
+
+  &:hover {
+    transition: all 0.25s ease;
+    background-color: var(--background-color-medium-yellow);
+  }
+
+  &.active {
+    background-color: var(--background-color-deep-yellow);
+  }
+}

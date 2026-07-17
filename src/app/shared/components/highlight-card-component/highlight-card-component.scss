@@ -1,0 +1,81 @@
+div {
+  height: 310px;
+  width: 320px;
+  background-color: var(--background-color-light-grey);
+  border-top-right-radius: 80px;
+  font-family: var(--font-family-Mulish);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--font-color-dark-purple);
+  cursor: pointer;
+
+  > div {
+    width: 233px;
+    height: 210px;
+    border-top-right-radius: 0;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    justify-content: start;
+
+    > div {
+      display: flex;
+      align-items: start;
+      flex-direction: column;
+      gap: 8px;
+
+      > span {
+        font-size: var(--font-size-14);
+      }
+
+      > span:last-of-type {
+        font-size: var(--font-size-26);
+      }
+    }
+  }
+
+  &:hover {
+    background-color: var(--background-color-light-purple);
+    > div {
+      background-color: var(--background-color-light-purple);
+      > div {
+        background-color: var(--background-color-light-purple);
+      }
+    }
+  }
+}
+
+@media (max-width: 1600px) {
+  div {
+    height: 250px;
+    width: 233px;
+
+    > div {
+      width: 200px;
+      height: 190px;
+      background-color: transparent;
+
+
+      > div {
+        > span {
+          font-size: var(--font-size-14);
+        }
+
+        > span:last-of-type {
+          font-size: var(--font-size-24);
+        }
+      }
+    }
+
+    &:hover {
+      background-color: var(--background-color-light-purple);
+      > div {
+        background-color: var(--background-color-light-purple);
+        > div {
+          background-color: var(--background-color-light-purple);
+        }
+      }
+    }
+  }
+}

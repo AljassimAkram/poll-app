@@ -1,0 +1,39 @@
+section {
+  width: 357px;
+  min-height: 86px;
+  height: auto;
+  background-color: var(--background-color-light-yellow);
+  border-radius: 5px;
+  border-top-right-radius: 50px;
+  box-sizing: border-box;
+  padding: 14px 60px 14px 20px;
+  display: flex;
+  align-items: start;
+  display:none;
+  opacity: 0;
+  transform: translateY(-10px);
+
+  div {
+    font-family: var(--font-family-NerkoOne);
+    font-size: var(--font-size-24);
+    font-weight: var(--font-weight-400);
+    color: var(--font-color-dark-purple);
+  }
+  svg {
+    position: fixed;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    right: 40px;
+  }
+  transition: all 0.25s ease;
+}
+
+section.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1600px) {
+}

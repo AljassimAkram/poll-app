@@ -1,0 +1,17 @@
+<div>
+  <p class="result-title">{{ question }}</p>
+
+  @for (item of bars; track $index; let i = $index) {
+    <div class="bar-row">
+      <p class="bar-letter">{{ getLetterFromIndex(i) }}</p>
+
+      <div class="bar-bg">
+        <div class="bar-fill" [style.width.%]="item.percentage"></div>
+      </div>
+
+      <p class="bar-percent">
+        {{ item.percentage | number: '1.0-0' }}%
+      </p>
+    </div>
+  }
+</div>

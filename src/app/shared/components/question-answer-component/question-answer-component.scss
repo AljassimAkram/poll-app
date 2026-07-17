@@ -1,0 +1,53 @@
+section {
+  max-width: 300px;
+  font-family: var(--font-family-Mulish);
+  font-size: var(--font-size-18);
+  color: var(--font-color-dark-purple);
+  margin-bottom: 20px;
+
+  p {
+    margin: 0px;
+  }
+
+  div {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+
+    p:first-of-type {
+      font-weight: var(--font-weight-700);
+      font-size: var(--font-size-18);
+    }
+
+    p {
+      font-size: var(--font-size-12);
+    }
+  }
+}
+
+.answers {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 15px;
+
+  app-checkbox-component {
+    display: flex;
+    align-items: center;
+    margin: 5px 0px;
+
+    p {
+      margin-left: 10px;
+      font-size: var(--font-size-16) !important;
+      font-weight: var(--font-weight-400) !important;
+
+      span{
+        font-weight: var(--font-weight-700);
+      }
+    }
+  }
+}
+
+.display-none {
+  display: none;
+}
