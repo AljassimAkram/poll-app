@@ -40,7 +40,6 @@ export class SurveyPage {
   answers: any = null;
   counters: number[] = [];
   channel: any;
-
   responsivOpenCloseToggle = true;
 
   screenWidth = window.innerWidth;
@@ -161,6 +160,13 @@ export class SurveyPage {
     const endDay = this.survey.endsDay;
     const [year, month, day] = endDay.split('-');
     return `${day}.${month}.${year}`;
+  }
+
+  /**
+   * Checks whether at least one answer has votes.
+   */
+  hasVotes(): boolean {
+    return this.answers?.some((answer: any) => Number(answer.clicked) > 0) ?? false;
   }
 
   /**

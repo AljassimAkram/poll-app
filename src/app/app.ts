@@ -19,10 +19,4 @@ import { OverlayComponent } from './shared/components/overlay-component/overlay-
 
 export class App {
   protected readonly title = signal('pollApp');
-
-
-  @HostListener('document:contextmenu', ['$event'])
-  blockRightClick(event: MouseEvent) {
-    event.preventDefault();
-  }
 }

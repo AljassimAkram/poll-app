@@ -439,10 +439,10 @@
   <section class="allSurveys">
     <div class="allSurveysHeader">
       <div>
-        <app-filter-button-component [isClicked]="activeSurveyFilter" (click)="activeOrPastSurvey()"
+        <app-filter-button-component [isClicked]="activeSurveyFilter" (click)="showActiveSurvey()"
           >Active survey</app-filter-button-component
         >
-        <app-filter-button-component [isClicked]="pastSurveyFilter" (click)="activeOrPastSurvey()"
+        <app-filter-button-component [isClicked]="pastSurveyFilter" (click)="showPastSurvey()"
           >Past survey</app-filter-button-component
         >
       </div>

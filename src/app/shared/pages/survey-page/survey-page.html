@@ -87,22 +87,33 @@
 
         <div [class.display-none]="!responsivOpenCloseToggle">
           <div class="survey-results-headline">
-            <p>Survey results <span>LIVE</span></p>
+            <p>
+              Survey results
+                <span>LIVE</span>
+            </p>
           </div>
-          <div class="survey-results-all">
-            @for (item of questions; track item; let i = $index) {
-              <app-results-component
-                [question]="i + 1 + '. ' + item.question_headline"
-                [bars]="
-                  answers
-                    .filter((a) => a.question_id === item.id)
-                    .map((a) => ({
-                      percentage: counters[item.id] ? (a.clicked / counters[item.id]) * 100 : 0,
-                    }))
-                "
-              ></app-results-component>
-            }
-          </div>
+
+          @if (hasVotes()) {
+            <div class="survey-results-all">
+              @for (item of questions; track item; let i = $index) {
+                <app-results-component
+                  [question]="i + 1 + '. ' + item.question_headline"
+                  [bars]="
+                    answers
+                      .filter((a) => a.question_id === item.id)
+                      .map((a) => ({
+                        percentage: counters[item.id] ? (a.clicked / counters[item.id]) * 100 : 0,
+                      }))
+                  "
+                ></app-results-component>
+              }
+            </div>
+          } @else {
+            <div class="no-results">
+              <p>Results will be shown here after participants complete the survey.</p>
+              <p>There are no answers yet.</p>
+            </div>
+          }
         </div>
       </section>
     </div>

@@ -15,6 +15,7 @@ export class QuestionAnswerComponent {
   @Input() questions: { text: string; id: number }[] = [];
   @Input() disabled = false;
   selectedAnswer: number | null = null;
+  selectedAnswers: number[] = [];
 
   /**
    * Creates the component.
@@ -30,19 +31,34 @@ export class QuestionAnswerComponent {
     return String.fromCharCode(65 + i);
   }
 
-  /**
-   * Handles single answer selection.
-   * Removes previous selection in database.
-   * Sets new selected answer.
-   */
   onSingleAnswerSelected(checked: boolean, answerId: number) {
     if (!checked && this.selectedAnswer === answerId) {
+      this.supabaseService.updatedClickedAnswerInDB(answerId, false);
       this.selectedAnswer = null;
     } else if (checked) {
       if (this.selectedAnswer !== null) {
         this.supabaseService.updatedClickedAnswerInDB(this.selectedAnswer, false);
       }
+
       this.selectedAnswer = answerId;
+      this.supabaseService.updatedClickedAnswerInDB(answerId, true);
+    }
+  }
+
+  /**
+   * Handles single answer selection.
+   * Removes previous selection in database.
+   * Sets new selected answer.
+   */
+  onMultipleAnswerSelected(checked: boolean, answerId: number) {
+    if (checked) {
+      if (!this.selectedAnswers.includes(answerId)) {
+        this.selectedAnswers.push(answerId);
+        this.supabaseService.updatedClickedAnswerInDB(answerId, true);
+      }
+    } else {
+      this.selectedAnswers = this.selectedAnswers.filter((id) => id !== answerId);
+      this.supabaseService.updatedClickedAnswerInDB(answerId, false);
     }
   }
 }

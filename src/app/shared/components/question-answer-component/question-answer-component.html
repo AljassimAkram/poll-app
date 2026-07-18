@@ -9,8 +9,14 @@
         <app-checkbox-component
           [answer]="item"
           [disabled]="disabled"
-          [checkedCheckbox]="!questionMoreAnswers && selectedAnswer === item.id"
-          (checkedChange)="onSingleAnswerSelected($event, item.id)"
+          [checkedCheckbox]="
+            questionMoreAnswers ? selectedAnswers.includes(item.id) : selectedAnswer === item.id
+          "
+          (checkedChange)="
+            questionMoreAnswers
+              ? onMultipleAnswerSelected($event, item.id)
+              : onSingleAnswerSelected($event, item.id)
+          "
         >
           <p>
             <span>{{ getLetterFromNumber(i) }}. </span>{{ item.text }}

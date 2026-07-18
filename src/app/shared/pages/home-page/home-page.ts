@@ -117,11 +117,13 @@ export class HomePage {
     this.goto.goToCreate();
   }
 
-  /**
-   * Toggles between active and past surveys.
-   */
-  activeOrPastSurvey() {
-    this.activeSurveyFilter = !this.activeSurveyFilter;
-    this.pastSurveyFilter = !this.activeSurveyFilter;
+  showActiveSurvey() {
+   this.activeSurveyFilter = true;
+   this.pastSurveyFilter = false;
+  }
+
+ showPastSurvey() {
+   this.activeSurveyFilter = false;
+   this.pastSurveyFilter = true;
   }
 }
