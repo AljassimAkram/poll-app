@@ -2,11 +2,11 @@
   <app-header-component [logoColor]="'light'"></app-header-component>
 
   <section class="infoSection">
-    <p>
-      Collect Feedback, <br />
-      Unlock Ideas
-    </p>
     <div class="infoSection-left">
+      <p>
+        Collect Feedback, <br />
+        Unlock Ideas
+      </p>
       <p>
         Create and share surveys in minutes – from team events to workplace culture. Collect
         opinions, engage your audience, and turn feedback into action.
@@ -414,71 +414,75 @@
     </div>
   </section>
 
-  <section class="yourSurveys">
-    <div class="yourSurveysHeadline">
-      <p>Your surveys</p>
-    </div>
-
-    <div class="yourSurveysInfoText">
-      <p>Ending soon surveys</p>
-    </div>
-
-    <div class="yourSurveysBoxs">
-      @for (item of surveysEndingSoon; track item.id) {
-        <app-highlight-card-component
-          (click)="openPage(item.id)"
-          [titel]="item.category"
-          [description]="item.headline"
-          [dayText]="'Ends in ' + item.daysLeft + (item.daysLeft === 1 ? ' Day' : ' Days')"
-        >
-        </app-highlight-card-component>
-      }
-    </div>
-  </section>
-
-  <section class="allSurveys">
-    <div class="allSurveysHeader">
-      <div>
-        <app-filter-button-component [isClicked]="activeSurveyFilter" (click)="showActiveSurvey()"
-          >Active survey</app-filter-button-component
-        >
-        <app-filter-button-component [isClicked]="pastSurveyFilter" (click)="showPastSurvey()"
-          >Past survey</app-filter-button-component
-        >
+  <section class="sectionSurveys">
+    <div class="yourSurveys">
+      <div class="yourSurveysHeadline">
+        <p>Your surveys</p>
       </div>
 
-      <app-drop-down-component (categorySelected)="onCategorySelected($event)"
-        >Sort by categories</app-drop-down-component
-      >
-    </div>
+      <div class="yourSurveysInfoText">
+        <p>Ending soon surveys</p>
+      </div>
 
-    <div class="allSurveysList">
-      @for (item of surveys; track item.id) {
-        @if (
-          ((activeSurveyFilter && item.daysLeft >= 0 && !item.isParticipated) ||
-            (pastSurveyFilter && (item.daysLeft < 0 || item.isParticipated))) &&
-          (filter === -1 ||
-            (filter === 0 && item.category === 'Team Activities') ||
-            (filter === 1 && item.category === 'Health & Wellness') ||
-            (filter === 2 && item.category === 'Gaming & Entertainment') ||
-            (filter === 3 && item.category === 'Education & Learning') ||
-            (filter === 4 && item.category === 'Lifestyle & Preferences') ||
-            (filter === 5 && item.category === 'Technology & Innovation'))
-        ) {
-          <app-survey-view-component
+      <div class="yourSurveysBoxs">
+        @for (item of surveysEndingSoon; track item.id) {
+          <app-highlight-card-component
             (click)="openPage(item.id)"
             [titel]="item.category"
             [description]="item.headline"
-            [dayText]="
-              activeSurveyFilter
-                ? 'Ends in ' + item.daysLeft + (item.daysLeft === 1 ? ' Day' : ' Days')
-                : 'Survey is closed'
-            "
+            [dayText]="'Ends in ' + item.daysLeft + (item.daysLeft === 1 ? ' Day' : ' Days')"
           >
-            >
-          </app-survey-view-component>
+          </app-highlight-card-component>
         }
-      }
+      </div>
+    </div>
+  </section>
+
+  <section class="sectionSurveys">
+    <div class="allSurveys">
+      <div class="allSurveysHeader">
+        <div>
+          <app-filter-button-component [isClicked]="activeSurveyFilter" (click)="showActiveSurvey()"
+            >Active survey</app-filter-button-component
+          >
+          <app-filter-button-component [isClicked]="pastSurveyFilter" (click)="showPastSurvey()"
+            >Past survey</app-filter-button-component
+          >
+        </div>
+
+        <app-drop-down-component (categorySelected)="onCategorySelected($event)"
+          >Sort by categories</app-drop-down-component
+        >
+      </div>
+
+      <div class="allSurveysList">
+        @for (item of surveys; track item.id) {
+          @if (
+            ((activeSurveyFilter && item.daysLeft >= 0 && !item.isParticipated) ||
+              (pastSurveyFilter && (item.daysLeft < 0 || item.isParticipated))) &&
+            (filter === -1 ||
+              (filter === 0 && item.category === 'Team Activities') ||
+              (filter === 1 && item.category === 'Health & Wellness') ||
+              (filter === 2 && item.category === 'Gaming & Entertainment') ||
+              (filter === 3 && item.category === 'Education & Learning') ||
+              (filter === 4 && item.category === 'Lifestyle & Preferences') ||
+              (filter === 5 && item.category === 'Technology & Innovation'))
+          ) {
+            <app-survey-view-component
+              (click)="openPage(item.id)"
+              [titel]="item.category"
+              [description]="item.headline"
+              [dayText]="
+                activeSurveyFilter
+                  ? 'Ends in ' + item.daysLeft + (item.daysLeft === 1 ? ' Day' : ' Days')
+                  : 'Survey is closed'
+              "
+            >
+              >
+            </app-survey-view-component>
+          }
+        }
+      </div>
     </div>
   </section>
 </div>

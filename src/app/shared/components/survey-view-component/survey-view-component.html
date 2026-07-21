@@ -1,11 +1,19 @@
-<button>
-  <div>
-    <div>
-      <span>{{ titel }}</span>
-      <span>{{ description }}</span>
+<button class="survey-list-card" type="button">
+  <div class="survey-list-card__content">
+    <div class="survey-list-card__text">
+      <span class="survey-list-card__title">
+        {{ titel }}
+      </span>
+
+      <span class="survey-list-card__description">
+        {{ description }}
+      </span>
     </div>
-    <section>
-      <app-survery-status-component color="deep">{{ dayText }}</app-survery-status-component>
-    </section>
+
+    <div class="survey-list-card__status">
+      <app-survery-status-component color="deep">
+        {{ dayText }}
+      </app-survery-status-component>
+    </div>
   </div>
 </button>

@@ -1,9 +1,12 @@
-<div>
-    <div>
-        <div>
-            <span>{{titel}}</span>
-            <span>{{description}}</span>
-        </div>
-        <app-survery-status-component color="light">{{dayText}}</app-survery-status-component>
+<div class="survey-card">
+  <div class="survey-card__content">
+    <div class="survey-card__text">
+      <span class="survey-card__title">{{ titel }}</span>
+      <span class="survey-card__description">{{ description }}</span>
     </div>
+
+    <app-survery-status-component color="light">
+      {{ dayText }}
+    </app-survery-status-component>
+  </div>
 </div>

@@ -15,7 +15,6 @@
   display: flex;
   align-items: start;
   justify-content: space-between;
-  flex-direction: column;
 
   p:first-of-type {
     font-family: var(--font-family-NerkoOne);
@@ -23,6 +22,7 @@
     color: var(--background-color-deep-yellow);
     line-height: 70px;
     margin: 0px;
+    max-width: 712px;
   }
 }
 
@@ -32,12 +32,13 @@
 
   > p:last-of-type {
     font-family: var(--font-family-Mulish);
-    font-size: var(--font-size-16);
+    font-size: var(--font-size-24);
     color: white;
-    line-height: 22px;
+    line-height: 100%;
     margin: 0px;
     margin-top: 15px;
     margin-bottom: 40px;
+    max-width: 666px;
   }
 }
 
@@ -108,11 +109,14 @@
   scale: 0.8;
 }
 
+.sectionSurveys{
+  display: flex;
+  justify-content: center;
+}
+
 .yourSurveys {
-  margin-left: 200px;
-  margin-right: 200px;
-  margin-top: 90px;
-  height: 580px;
+  max-width: 1024px;
+  width: 100%;
 }
 
 .yourSurveysHeadline {
@@ -152,11 +156,8 @@
 }
 
 .allSurveys {
-  width: auto;
-  height: 500px;
-  margin-top: 40px;
-  margin-left: 200px;
-  margin-right: 200px;
+  max-width: 1024px;
+  width: 100%;
 }
 
 .allSurveysHeader {
@@ -167,15 +168,11 @@
 
 .allSurveysList {
   margin-top: 40px;
-  width: auto;
-  display: flex;
-  align-items: start;
-  justify-content: space-around;
-  flex-direction: column;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
 
+  max-height: 413px;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -198,32 +195,6 @@
     padding: 40px 16px 50px;
   }
 
-  .infoSection {
-    flex-direction: column;
-    margin-top: 50px;
-    p:first-of-type {
-      font-size: var(--font-size-62);
-      line-height: 50px;
-    }
-  }
-
-  .infoSection-left {
-    order: 2;
-    width: 100%;
-    p:first-of-type{
-      line-height: 25px;
-    }
-
-    p:last-of-type {
-      font-size: var(--font-size-18);
-    }
-
-    div:last-of-type {
-      display: flex;
-      justify-content: center;
-    }
-  }
-
   .infoSection-right {
     width: 340px;
     order: 1;
@@ -231,7 +202,6 @@
   }
 
   .yourSurveys {
-    margin-top: 450px;
     margin-left: 0;
     margin-right: 0;
     margin-bottom: 50px;
@@ -257,21 +227,6 @@
     display: none;
   }
 
-  .allSurveys {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-bottom: 10px;
-    margin-top: 0px;
-  }
-
-  .allSurveysHeader {
-    align-items: center;
-    flex-direction: column;
-    gap: 30px;
-  }
 }
 
 @media (max-width: 700px) {
