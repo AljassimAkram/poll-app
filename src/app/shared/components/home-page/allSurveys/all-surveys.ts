@@ -23,12 +23,14 @@ import { GotoServieces } from '../../../services/goto-servieces';
   styleUrl: './all-surveys.scss',
 })
 export class AllSurveys {
+  isHovered = false;
   surveys: any[] = [];
   surveysEndingSoon: any[] = [];
 
   filter = -1;
   activeSurveyFilter = true;
   pastSurveyFilter = false;
+  
 
   constructor(
     private supabaseService: SupabaseServieces,
