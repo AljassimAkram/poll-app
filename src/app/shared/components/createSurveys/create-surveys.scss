@@ -276,3 +276,29 @@ app-input-field-component {
     right: -20px;
   }
 }
+
+.survey-status {
+  min-width: 100px;
+  width: fit-content;
+  height: 26px;
+  padding: 0 12px;
+  border: none;
+  border-top-right-radius: 14px;
+  box-sizing: border-box;
+  font-family: var(--font-family-nokora);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-400);
+  color: var(--font-color-dark-purple);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.survey-status--light {
+  background-color: var(--background-color-light-yellow);
+}
+
+.survey-status--dark {
+  background-color: var(--background-color-medium-yellow);
+}
+

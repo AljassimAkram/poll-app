@@ -1,32 +1,26 @@
-import { Component, Inject, ChangeDetectorRef, HostListener } from '@angular/core';
-import { HeaderComponent } from '../../components/header-component/header-component';
-import { PrimaryButtonComponent } from '../../components/primary-button-component/primary-button-component';
-import { SurveryStatusComponent } from '../../components/survery-status-component/survery-status-component';
-import { GotoServieces } from '../../services/goto-servieces';
-import { QuestionAnswerComponent } from '../../components/question-answer-component/question-answer-component';
-import { AnswearComponent } from '../../components/answear-component/answear-component';
+import { Component, ChangeDetectorRef, HostListener } from '@angular/core';
+import { HeaderComponent } from '../../home-page/header/header-component';
+import { PrimaryButtonComponent } from '../../home-page/allSurveys/primary-button-component/primary-button-component';
+import { GotoServieces } from '../../../services/goto-servieces';
+import { QuestionAnswerComponent } from './question-answer-component/question-answer-component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SupabaseServieces } from '../../services/supabase-servieces';
-import { ResultsComponent } from '../../components/results-component/results-component';
-import { DropDownComponent } from '../../components/drop-down-component/drop-down-component';
-import { SecondaryButtonComponent } from '../../components/secondary-button-component/secondary-button-component';
+import { SupabaseServieces } from '../../../services/supabase-servieces';
+import { ResultsComponent } from './results-component/results-component';
+import { SecondaryButtonComponent } from './secondary-button-component/secondary-button-component';
 
 @Component({
-  selector: 'app-survey-page',
+  selector: 'app-show-survey',
   imports: [
     HeaderComponent,
     PrimaryButtonComponent,
-    SurveryStatusComponent,
     QuestionAnswerComponent,
-    AnswearComponent,
     ResultsComponent,
-    DropDownComponent,
     SecondaryButtonComponent,
   ],
-  templateUrl: './survey-page.html',
-  styleUrl: './survey-page.scss',
+  templateUrl: './show-survey.html',
+  styleUrl: './show-survey.scss',
 })
-export class SurveyPage {
+export class ShowSurvey {
   constructor(
     private supabaseService: SupabaseServieces,
     private goto: GotoServieces,

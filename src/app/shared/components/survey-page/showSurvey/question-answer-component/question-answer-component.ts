@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { CheckboxComponent } from '../checkbox-component/checkbox-component';
-import { SupabaseServieces } from '../../services/supabase-servieces';
+import { CheckboxComponent } from '../../../createSurveys/checkbox-component/checkbox-component';
+import { SupabaseServieces } from '../../../../services/supabase-servieces';
 
 @Component({
   selector: 'app-question-answer-component',

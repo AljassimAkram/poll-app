@@ -12,9 +12,9 @@
         <div class="survey-answers">
           <div class="survey-answer-info">
             <div>
-              <app-survery-status-component [color]="'deep'" [class.shake]="shake">
+              <span class="survey-status survey-status--dark" [class.shake]="shake">
                 {{ pastSurvey ? 'Done' : 'Published' }}
-              </app-survery-status-component>
+              </span>
               <app-secondary-button-component
                 [width]="40"
                 [class.display-none]="screenWidth > 1600"

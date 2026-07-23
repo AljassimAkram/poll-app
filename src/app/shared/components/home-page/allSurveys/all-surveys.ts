@@ -1,19 +1,16 @@
 import { Component, ChangeDetectorRef, Renderer2 } from '@angular/core';
-import { PrimaryButtonComponent } from '../../components/primary-button-component/primary-button-component';
-import { HeaderComponent } from '../../components/header-component/header-component';
-import { HighlightCardComponent } from '../../components/highlight-card-component/highlight-card-component';
-import { FilterButtonComponent } from '../../components/filter-button-component/filter-button-component';
-import { DropDownComponent } from '../../components/drop-down-component/drop-down-component';
-import { SurveyViewComponent } from '../../components/survey-view-component/survey-view-component';
-import { ResultsComponent } from '../../components/results-component/results-component';
-import { SupabaseServieces } from '../../services/supabase-servieces';
-import { RouterLink, Router } from '@angular/router';
-import { GotoServieces } from '../../services/goto-servieces';
-import { CreateQuestionComponent } from '../../components/create-question-component/create-question-component';
-import { CategoriesService } from '../../services/categories-servieces';
+import { Router } from '@angular/router';
+import { PrimaryButtonComponent } from './primary-button-component/primary-button-component';
+import { HeaderComponent } from '../header/header-component';
+import { HighlightCardComponent } from '../yourSurveys/highlight-card-component/highlight-card-component';
+import { FilterButtonComponent } from './filter-button-component/filter-button-component';
+import { DropDownComponent } from './drop-down-component/drop-down-component';
+import { SurveyViewComponent } from './survey-view-component/survey-view-component';
+import { SupabaseServieces } from '../../../services/supabase-servieces';
+import { GotoServieces } from '../../../services/goto-servieces';
 
 @Component({
-  selector: 'app-home-page',
+  selector: 'app-all-surveys',
   imports: [
     HeaderComponent,
     PrimaryButtonComponent,
@@ -21,14 +18,11 @@ import { CategoriesService } from '../../services/categories-servieces';
     FilterButtonComponent,
     DropDownComponent,
     SurveyViewComponent,
-    ResultsComponent,
-    RouterLink,
-    CreateQuestionComponent,
   ],
-  templateUrl: './home-page.html',
-  styleUrl: './home-page.scss',
+  templateUrl: './all-surveys.html',
+  styleUrl: './all-surveys.scss',
 })
-export class HomePage {
+export class AllSurveys {
   surveys: any[] = [];
   surveysEndingSoon: any[] = [];
 

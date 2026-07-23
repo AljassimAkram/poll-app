@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { SupabaseServieces } from '../../services/supabase-servieces';
+import { SupabaseServieces } from '../../../services/supabase-servieces';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { ɵEmptyOutletComponent } from '@angular/router';
-import { CategoriesService } from '../../services/categories-servieces';
+import { CategoriesService } from '../../../../services/categories-servieces';
 
 @Component({
   selector: 'app-drop-down-component',
-  imports: [ɵEmptyOutletComponent],
+  imports: [],
   templateUrl: './drop-down-component.html',
   styleUrl: './drop-down-component.scss',
 })

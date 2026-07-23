@@ -1,24 +1,11 @@
 import { Routes } from '@angular/router';
-import { HomePage } from './shared/pages/home-page/home-page';
-import { SurveyPage } from './shared/pages/survey-page/survey-page';
-import { CreatePage } from './shared/pages/create-page/create-page';
+import { AllSurveys } from './shared/components/home-page/allSurveys/all-surveys';
+import { ShowSurvey } from './shared/components/survey-page/showSurvey/show-survey';
+import { CreateSurveys } from './shared/components/createSurveys/create-surveys';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: HomePage,
-  },
-  {
-    path: 'survey/:id',
-    component: SurveyPage,
-  },
-  {
-    path: 'create',
-    component: CreatePage,
-  },
-
-  {
-    path: '**',
-    redirectTo: '',
-  },
+  { path: '', component: AllSurveys },
+  { path: 'survey/:id', component: ShowSurvey },
+  { path: 'create', component: CreateSurveys },
+  { path: '**', redirectTo: '' },
 ];

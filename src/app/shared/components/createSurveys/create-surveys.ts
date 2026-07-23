@@ -1,38 +1,33 @@
 import { Component, ChangeDetectorRef, HostListener } from '@angular/core';
-import { SurveryStatusComponent } from '../../components/survery-status-component/survery-status-component';
-import { SecondaryButtonComponent } from '../../components/secondary-button-component/secondary-button-component';
-import { PrimaryButtonComponent } from '../../components/primary-button-component/primary-button-component';
+import { SecondaryButtonComponent } from '../survey-page/showSurvey/secondary-button-component/secondary-button-component';
+import { PrimaryButtonComponent } from '../home-page/allSurveys/primary-button-component/primary-button-component';
 import { RouterLink, Router } from '@angular/router';
-import { HeaderComponent } from '../../components/header-component/header-component';
-import { InputFieldComponent } from '../../components/input-field-component/input-field-component';
-import { DeleteButtonComponent } from '../../components/delete-button-component/delete-button-component';
-import { DropDownComponent } from '../../components/drop-down-component/drop-down-component';
-import { HighlightCardComponent } from '../../components/highlight-card-component/highlight-card-component';
-import { CreateQuestionComponent } from '../../components/create-question-component/create-question-component';
+import { HeaderComponent } from '../home-page/header/header-component';
+import { InputFieldComponent } from './input-field-component/input-field-component';
+import { DeleteButtonComponent } from './delete-button-component/delete-button-component';
+import { DropDownComponent } from '../home-page/allSurveys/drop-down-component/drop-down-component';
+import { CreateQuestionComponent } from './create-question-component/create-question-component';
 import { SupabaseServieces } from '../../services/supabase-servieces';
 import { CategoriesService } from '../../services/categories-servieces';
-import { OverlayComponent } from '../../components/overlay-component/overlay-component';
+import { OverlayComponent } from './overlay-component/overlay-component';
 import { GotoServieces } from '../../services/goto-servieces';
 
 @Component({
-  selector: 'app-create-page',
+  selector: 'app-create-surveys',
   imports: [
-    SurveryStatusComponent,
     SecondaryButtonComponent,
     PrimaryButtonComponent,
-    RouterLink,
     HeaderComponent,
     InputFieldComponent,
     DeleteButtonComponent,
     DropDownComponent,
-    HighlightCardComponent,
     CreateQuestionComponent,
     OverlayComponent,
   ],
-  templateUrl: './create-page.html',
-  styleUrl: './create-page.scss',
+  templateUrl: './create-surveys.html',
+  styleUrl: './create-surveys.scss',
 })
-export class CreatePage {
+export class CreateSurveys {
   constructor(
     private router: Router,
     private supabaseService: SupabaseServieces,
