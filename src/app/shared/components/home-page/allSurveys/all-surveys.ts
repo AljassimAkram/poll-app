@@ -26,11 +26,9 @@ export class AllSurveys {
   isHovered = false;
   surveys: any[] = [];
   surveysEndingSoon: any[] = [];
-
   filter = -1;
   activeSurveyFilter = true;
   pastSurveyFilter = false;
-  
 
   constructor(
     private supabaseService: SupabaseServieces,
@@ -40,28 +38,37 @@ export class AllSurveys {
     private renderer: Renderer2,
   ) {}
 
-  /**
-   * Loads surveys on page start.
-   * Sorts and selects top ending soon surveys.
-   */
   async ngOnInit() {
     window.scrollTo(0, 0);
     this.setBodyClass('home');
-    const pastSurveys: string[] = JSON.parse(localStorage.getItem('pastSurveys') || '[]');
-    this.surveys = (await this.supabaseService.getSurveys()).map((s) => ({
-      ...s,
-      daysLeft: this.getDaysLeft(s.endsDay),
-      isParticipated: pastSurveys.includes(String(s.id)),
-    }));
+    await this.loadSurveys();
+    this.setEndingSoonSurveys();
+    this.cdr.detectChanges();
+  }
+
+  private async loadSurveys() {
+    const pastSurveys = this.getPastSurveys();
+    const surveys = await this.supabaseService.getSurveys();
+    this.surveys = surveys.map((survey) => this.prepareSurvey(survey, pastSurveys));
+  }
+
+  private getPastSurveys(): string[] {
+    return JSON.parse(localStorage.getItem('pastSurveys') || '[]');
+  }
+
+  private prepareSurvey(survey: any, pastSurveys: string[]) {
+    return {
+      ...survey,
+      daysLeft: this.getDaysLeft(survey.endsDay),
+      isParticipated: pastSurveys.includes(String(survey.id)),
+    };
+  }
+
+  private setEndingSoonSurveys() {
     this.surveysEndingSoon = this.surveys
-      .map((s) => ({
-        ...s,
-        daysLeft: this.getDaysLeft(s.endsDay),
-      }))
-      .filter((s) => s.daysLeft >= 0)
+      .filter((survey) => survey.daysLeft >= 0)
       .sort((a, b) => a.daysLeft - b.daysLeft)
       .slice(0, 3);
-    this.cdr.detectChanges();
   }
 
   ngOnDestroy() {
@@ -84,42 +91,33 @@ export class AllSurveys {
   getDaysLeft(dateStr: string): number {
     const endDate = new Date(dateStr);
     const today = new Date();
-
-    return Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    return Math.ceil((endDate.getTime() - today.getTime()) / 86400000);
   }
 
   formatDate(date: string) {
-    const [y, m, d] = date.split('-');
-    return `${d}.${m}.${y}`;
+    const [year, month, day] = date.split('-');
+    return `${day}.${month}.${year}`;
   }
-  /**
-   * Sets selected category filter.
-   */
+
   onCategorySelected(id: number) {
     this.filter = id;
   }
 
-  /**
-   * Opens survey detail page.
-   */
   openPage(id: number) {
     this.router.navigate(['/survey', id]);
   }
 
-  /**
-   * Navigates to create page.
-   */
   goCreate() {
     this.goto.goToCreate();
   }
 
   showActiveSurvey() {
-   this.activeSurveyFilter = true;
-   this.pastSurveyFilter = false;
+    this.activeSurveyFilter = true;
+    this.pastSurveyFilter = false;
   }
 
- showPastSurvey() {
-   this.activeSurveyFilter = false;
-   this.pastSurveyFilter = true;
+  showPastSurvey() {
+    this.activeSurveyFilter = false;
+    this.pastSurveyFilter = true;
   }
 }

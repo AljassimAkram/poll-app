@@ -54,33 +54,42 @@ export class ShowSurvey {
    */
   async ngOnInit() {
     window.scrollTo(0, 0);
-    const id = this.route.snapshot.paramMap.get('id');
-    const pastSurveys: string[] = JSON.parse(localStorage.getItem('pastSurveys') || '[]');
-    if (!id) {
-      this.router.navigate(['/']);
-      return;
-    }
+    const id = this.getSurveyId();
+    if (!id) return this.goToHomePage();
+    if (!(await this.loadSurvey(id))) return this.goToHomePage();
+    await this.loadSurveyDetails(id);
+    this.subscribeToAnswers();
+    this.setPastSurveyState(id);
+  }
+
+  private getSurveyId(): string | null {
+    return this.route.snapshot.paramMap.get('id');
+  }
+
+  private goToHomePage() {
+    this.router.navigate(['/']);
+  }
+
+  private async loadSurvey(id: string): Promise<boolean> {
     this.survey = await this.supabaseService.getSurveyById(Number(id));
+    return Boolean(this.survey);
+  }
 
-    if (!this.survey) {
-      this.router.navigate(['/']);
-      return;
-    }
-
+  private async loadSurveyDetails(id: string) {
     this.questions = await this.supabaseService.getQuestionsById(Number(id));
     this.answers = await this.supabaseService.getAnswersById(Number(id));
-    this.getEndDate();
     this.buildCounters();
     this.cdr.detectChanges();
+  }
 
-    this.channel = this.supabaseService.subscribeAnswers(() => {
-      this.loadStatisticsFromDB();
-    });
+  private subscribeToAnswers() {
+    this.channel = this.supabaseService.subscribeAnswers(() => this.loadStatisticsFromDB());
+  }
 
-    if (pastSurveys.includes(id)) {
-      this.pastSurvey = true;
-      this.cdr.detectChanges();
-    }
+  private setPastSurveyState(id: string) {
+    const pastSurveys = JSON.parse(localStorage.getItem('pastSurveys') || '[]');
+    this.pastSurvey = pastSurveys.includes(id);
+    if (this.pastSurvey) this.cdr.detectChanges();
   }
 
   pastSurveyInfo() {

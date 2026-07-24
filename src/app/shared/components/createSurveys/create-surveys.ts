@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { SecondaryButtonComponent } from '../survey-page/showSurvey/secondary-button-component/secondary-button-component';
 import { PrimaryButtonComponent } from '../home-page/allSurveys/primary-button-component/primary-button-component';
-import { RouterLink, Router } from '@angular/router';
 import { HeaderComponent } from '../home-page/header/header-component';
 import { InputFieldComponent } from './input-field-component/input-field-component';
 import { DeleteButtonComponent } from './delete-button-component/delete-button-component';
@@ -11,6 +11,12 @@ import { SupabaseServieces } from '../../services/supabase-servieces';
 import { CategoriesService } from '../../services/categories-servieces';
 import { OverlayComponent } from './overlay-component/overlay-component';
 import { GotoServieces } from '../../services/goto-servieces';
+
+type SurveyQuestion = {
+  question_headline: string;
+  multiple_choice: boolean;
+  answers: string[];
+};
 
 @Component({
   selector: 'app-create-surveys',
@@ -28,18 +34,11 @@ import { GotoServieces } from '../../services/goto-servieces';
   styleUrl: './create-surveys.scss',
 })
 export class CreateSurveys {
-  constructor(
-    private router: Router,
-    private supabaseService: SupabaseServieces,
-    private categoriesService: CategoriesService,
-    private cdr: ChangeDetectorRef,
-    private goto: GotoServieces,
-  ) {}
-
   filter = -1;
-
   published = false;
   publishedOrError = '';
+  screenWidth = window.innerWidth;
+  time = 5000;
 
   newSurvey = {
     SurveyName: '',
@@ -48,229 +47,197 @@ export class CreateSurveys {
     Category: '',
   };
 
-  questions: { question_headline: string; multiple_choice: boolean; answers: string[] }[] = [
-    { question_headline: '', multiple_choice: false, answers: [] },
-  ];
+  questions: SurveyQuestion[] = [this.createEmptyQuestion()];
 
-  onCheck(value: boolean, index: number) {
-    this.questions[index].multiple_choice = value;
-  }
+  constructor(
+    private router: Router,
+    private supabaseService: SupabaseServieces,
+    private categoriesService: CategoriesService,
+    private cdr: ChangeDetectorRef,
+    private goto: GotoServieces,
+  ) {}
 
-  screenWidth = window.innerWidth;
-
-  time = 5000;
-
-  /**
-   * Check window width
-   */
   @HostListener('window:resize')
   onResize() {
     this.screenWidth = window.innerWidth;
-  }
-
-  /**
-   * Navigates to home page.
-   */
-  goHome() {
-    this.goto.goToHome();
   }
 
   ngOnInit() {
     window.scrollTo(0, 0);
   }
 
-  /**
-   * Clears description text.
-   */
-
-  deleteValue(field: string) {
-    if (field === 'SurveyName') {
-      this.newSurvey.SurveyName = '';
-    } else if (field === 'DescribingText') {
-      this.newSurvey.DescribingText = '';
-    } else if (field === 'SetEndDate') {
-      this.newSurvey.SetEndDate = '';
-    }
+  onCheck(value: boolean, index: number) {
+    this.questions[index].multiple_choice = value;
   }
 
-  /**
-   * Sets selected category index.
-   */
-  onCategorySelected(id: number) {
-    this.filter = id;
+  goHome() {
+    this.goto.goToHome();
   }
 
-  /**
-   * Navigates back to home page.
-   */
   goToHome() {
     this.router.navigate(['/']);
   }
 
-  /**
-   * Adds a new question.
-   * Limit is 10 questions.
-   */
-  addQuestion() {
-    if (this.questions.length < 10) {
-      this.questions.push({ question_headline: '', multiple_choice: false, answers: [] });
-    }
+  deleteValue(field: string) {
+    const fields = this.newSurvey as Record<string, string>;
+    if (field in fields) fields[field] = '';
   }
 
-  /**
-   * Removes a question.
-   */
+  onCategorySelected(id: number) {
+    this.filter = id;
+  }
+
+  addQuestion() {
+    if (this.questions.length < 10) this.questions.push(this.createEmptyQuestion());
+  }
+
   removeSection(index: number) {
     this.questions.splice(index, 1);
   }
 
-  /**
-   * Sets category name from index.
-   */
   getCategory() {
     const categories = this.categoriesService.getCategories();
     this.newSurvey.Category = categories[this.filter];
   }
 
-  /**
-   * Publishes survey to database.
-   * Validates input first.
-   * Creates survey, questions and answers.
-   */
   async publishSurvey() {
     this.getCategory();
+    const error = this.getValidationError();
+    if (error) return this.showResult(error);
+    this.showResult('Your survey is now published');
+    await this.saveToDB();
+  }
 
+  private getValidationError(): string {
+    const surveyError = this.getSurveyError();
+    if (surveyError) return surveyError;
+    return this.getQuestionsError();
+  }
+
+  private getSurveyError(): string {
     let error = '';
+    if (!this.newSurvey.SurveyName.trim()) error += 'Survey name missing. ';
+    if (!this.newSurvey.Category) error += 'Category missing. ';
+    if (!this.isEndDateValid()) error += 'End date must be today or in the future. ';
+    return error;
+  }
 
-    if (this.newSurvey.SurveyName != '' && this.newSurvey.Category != undefined) {
-      if (!this.newSurvey.SetEndDate || this.newSurvey.SetEndDate < this.getToday()) {
-        error += 'End date must be today or in the future. ';
-        this.published = true;
-        this.publishedOrError = error;
-        this.showOverlay();
-        return;
-      }
+  private isEndDateValid(): boolean {
+    const endDate = this.newSurvey.SetEndDate;
+    return Boolean(endDate && endDate >= this.getToday());
+  }
 
-      for (let i = 0; i < this.questions.length; i++) {
-        if (this.questions[i].question_headline.trim() === '') {
-          error += `Question ${i + 1}: Headline missing. `;
-        }
-
-        const filledAnswers = this.questions[i].answers.filter((a) => a.trim() !== '');
-
-        if (filledAnswers.length < 2) {
-          error += `Question ${i + 1}: At least 2 answers required. `;
-        }
-
-        if (this.questions[i].answers.some((a) => a.trim() === '')) {
-          error += `Question ${i + 1}: Empty answer found. `;
-        }
-
-        if (error !== '') {
-          this.published = true;
-          this.publishedOrError = error;
-          this.showOverlay();
-          return;
-        }
-      }
-
-      this.published = true;
-      this.publishedOrError = 'Your survey is now published';
-      this.showOverlay();
-
-      this.saveToDB();
-    } else {
-      if (this.newSurvey.SurveyName == '') {
-        error += 'Survey name missing. ';
-      }
-
-      if (this.newSurvey.Category == undefined) {
-        error += 'Category missing. ';
-      }
-
-      this.published = true;
-      this.publishedOrError = error;
-      this.showOverlay();
+  private getQuestionsError(): string {
+    for (let index = 0; index < this.questions.length; index++) {
+      const error = this.getQuestionError(this.questions[index], index);
+      if (error) return error;
     }
+    return '';
+  }
+
+  private getQuestionError(question: SurveyQuestion, index: number): string {
+    const prefix = `Question ${index + 1}: `;
+    if (!question.question_headline.trim()) return `${prefix}Headline missing. `;
+    if (this.getFilledAnswers(question).length < 2) return `${prefix}At least 2 answers required. `;
+    if (question.answers.some((answer) => !answer.trim())) return `${prefix}Empty answer found. `;
+    return '';
+  }
+
+  private getFilledAnswers(question: SurveyQuestion): string[] {
+    return question.answers.filter((answer) => answer.trim());
+  }
+
+  private showResult(message: string) {
+    this.published = true;
+    this.publishedOrError = message;
+    this.showOverlay();
   }
 
   getToday(): string {
     const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy = today.getFullYear();
-
-    return `${yyyy}-${mm}-${dd}`;
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    return `${today.getFullYear()}-${month}-${day}`;
   }
 
   async saveToDB() {
-    const survey = await this.supabaseService.createSurvey({
+    const survey = await this.createSurveyRecord();
+    if (!survey) return;
+    await this.saveQuestions(survey.id);
+    this.resetCreateSurvey();
+  }
+
+  private createSurveyRecord() {
+    return this.supabaseService.createSurvey({
       headline: this.newSurvey.SurveyName,
       description: this.newSurvey.DescribingText,
       endsDay: this.newSurvey.SetEndDate,
       category: this.newSurvey.Category,
     });
-    for (let i = 0; i < this.questions.length; i++) {
-      const question = await this.supabaseService.createQuestion({
-        survey_id: survey.id,
-        multiple_choice: this.questions[i].multiple_choice,
-        question_headline: this.questions[i].question_headline,
-      });
-
-      for (const answer of this.questions[i].answers) {
-        await this.supabaseService.createAnswer({
-          survey_id: survey.id,
-          question_id: question.id,
-          answer_text: answer,
-        });
-      }
-    }
-    this.resetCreateSurvey();
   }
 
-  /**
-   * Reset the create survey page
-   */
+  private async saveQuestions(surveyId: string) {
+    for (const question of this.questions) {
+      await this.saveQuestion(surveyId, question);
+    }
+  }
+
+  private async saveQuestion(surveyId: string, item: SurveyQuestion) {
+    const question = await this.supabaseService.createQuestion({
+      survey_id: surveyId,
+      multiple_choice: item.multiple_choice,
+      question_headline: item.question_headline,
+    });
+    if (question) await this.saveAnswers(surveyId, question.id, item.answers);
+  }
+
+  private async saveAnswers(surveyId: string, questionId: string, answers: string[]) {
+    for (const answer of answers) {
+      await this.supabaseService.createAnswer({ survey_id: surveyId, question_id: questionId, answer_text: answer });
+    }
+  }
+
   resetCreateSurvey() {
     location.reload();
   }
 
-  /**
-   * Shows overlay after publishing.
-   * Hides it after time seconds.
-   */
   showOverlay() {
     this.time = 5000;
     this.cdr.detectChanges();
-    // window.scrollTo({ top: 0, behavior: 'smooth' });
-    setTimeout(() => {
-      this.published = false;
-      this.cdr.detectChanges();
-    }, this.time);
+    setTimeout(() => this.hideOverlay(), this.time);
   }
 
-  /**
-   * Updates form fields from child components.
-   */
+  private hideOverlay() {
+    this.published = false;
+    this.cdr.detectChanges();
+  }
+
   onInputChange(event: { field: string; value: string }) {
-    if (event.field === 'SurveyName') {
-      this.newSurvey.SurveyName = event.value;
-    } else if (event.field === 'DescribingText') {
-      this.newSurvey.DescribingText = event.value;
-    } else if (event.field === 'SetEndDate') {
-      this.newSurvey.SetEndDate = event.value;
-    }
+    if (this.updateSurveyField(event)) return;
+    if (event.field.startsWith('QuestionTitle_')) this.updateQuestionTitle(event);
+    if (event.field.startsWith('Answer_')) this.updateAnswer(event);
+  }
 
-    if (event.field.startsWith('QuestionTitle_')) {
-      const index = Number(event.field.split('_')[1]) - 1;
-      this.questions[index].question_headline = event.value;
-    }
+  private updateSurveyField(event: { field: string; value: string }): boolean {
+    const fields = this.newSurvey as Record<string, string>;
+    if (!(event.field in fields)) return false;
+    fields[event.field] = event.value;
+    return true;
+  }
 
-    if (event.field.startsWith('Answer_')) {
-      const parts = event.field.split('_');
-      const questionIndex = Number(parts[1]) - 1;
-      const answerIndex = parts[2].charCodeAt(0) - 65;
-      this.questions[questionIndex].answers[answerIndex] = event.value;
-    }
+  private updateQuestionTitle(event: { field: string; value: string }) {
+    const index = Number(event.field.split('_')[1]) - 1;
+    this.questions[index].question_headline = event.value;
+  }
+
+  private updateAnswer(event: { field: string; value: string }) {
+    const [_, question, answer] = event.field.split('_');
+    const questionIndex = Number(question) - 1;
+    const answerIndex = answer.charCodeAt(0) - 65;
+    this.questions[questionIndex].answers[answerIndex] = event.value;
+  }
+
+  private createEmptyQuestion(): SurveyQuestion {
+    return { question_headline: '', multiple_choice: false, answers: [] };
   }
 }
