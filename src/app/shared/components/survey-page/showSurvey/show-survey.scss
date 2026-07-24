@@ -104,7 +104,6 @@
 .survey-results-headline {
   font-family: var(--font-family-NerkoOne);
   font-size: var(--font-size-32);
-  padding-top: 90px;
 
   p {
     color: var(--font-color-dark-purple);
@@ -147,6 +146,7 @@
   display: flex;
   align-items: end;
   flex-direction: row;
+  gap: 24px;
 }
 
 .OpenCloseResults {
@@ -179,21 +179,27 @@
 
 .shake { animation: shake 0.5s ease; }
 
-@media (max-width: 1600px) {
+@media (max-width: 960px) {
   .survey {
+    width: 100%;
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 0px;
+    box-sizing: border-box;
+    gap: 20px;
   }
 
   .survey-header {
     margin-top: 40px;
+    margin-bottom: 40px;
     app-primary-button-component {
       display: none;
     }
   }
 
   .survey-answers {
+    width: 100%;
+    box-sizing: border-box;
     padding: 40px 20px 20px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -216,11 +222,11 @@
   }
 
   .survey-answer-container {
+    width: 100%;
     justify-content: center;
   }
 
   .survey-answer-list {
-    grid-template-columns: 1fr;
     overflow-y: hidden;
     overflow-x: hidden;
     scrollbar-width: none;
@@ -233,14 +239,14 @@
   }
 
   .swrapper {
-    margin-top: 100px;
+    width: 100%;
+    margin-top: 70px;
     flex-direction: column;
     align-items: center;
   }
 
   .survey-results {
     align-items: center;
-    margin-top: 50px;
     height: auto !important;
     width: 100%;
   }
@@ -266,28 +272,22 @@
   }
 }
 
-.survey-status {
-  min-width: 100px;
-  width: fit-content;
-  height: 26px;
-  padding: 0 12px;
-  border: none;
-  border-top-right-radius: 14px;
-  box-sizing: border-box;
-  font-family: var(--font-family-nokora);
-  font-size: var(--font-size-14);
-  font-weight: var(--font-weight-400);
-  color: var(--font-color-dark-purple);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+@media (max-width: 750px){
+  .survey-answer-list {
+    grid-template-columns: 1fr;
+  }
 }
 
-.survey-status--light {
-  background-color: var(--background-color-light-yellow);
-}
+@media (max-width: 390px){
+ .survey-answer-info{
+  p{
+    font-size:10px;
+  }
+ }
 
-.survey-status--dark {
-  background-color: var(--background-color-medium-yellow);
-}
-
+ .survey-results{
+   p{
+    font-size:12px;
+  }
+ }
+} 

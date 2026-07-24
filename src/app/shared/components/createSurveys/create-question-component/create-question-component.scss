@@ -59,3 +59,17 @@ app-input-field-component {
 .answerInput {
   width: 90%;
 }
+
+@media (max-width: 800px) {
+  section {
+    width: 100%;
+  }
+
+  .question-body div {
+    gap: 8px;
+  }
+
+  .answerInput {
+    width: calc(100% - 36px);
+  }
+}

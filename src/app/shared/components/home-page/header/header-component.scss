@@ -6,3 +6,12 @@ header {
     justify-content: space-between;
     cursor: pointer;
 }
+
+@media (max-width: 800px) {
+  header {
+    svg {
+      width: 88px;
+      height: auto;
+    }
+  }
+}
