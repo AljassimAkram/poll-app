@@ -1,10 +1,16 @@
 :host {
   display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background-color: white;
 }
 
 .create {
+  width: 100%;
+  max-width: 100%;
   padding: 40px 110px 0px;
+  overflow-x: hidden;
 }
 
 .create-main {
@@ -250,7 +256,10 @@ app-input-field-component {
   }
 
   app-create-question-component {
+    display: block;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 
   .addNext {

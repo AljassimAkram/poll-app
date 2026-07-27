@@ -166,3 +166,12 @@ input::selection {
     box-sizing: border-box;
   }
 }
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
