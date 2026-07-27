@@ -35,18 +35,18 @@ export class InputFieldComponent {
    * Allows only digits and navigation keys.
    */
   onKeyDown(event: KeyboardEvent) {
-    // if (this.type !== 'number') return;
-    // if (
-    //   event.key === 'Backspace' ||
-    //   event.key === 'Delete' ||
-    //   event.key === 'Tab' ||
-    //   event.key.startsWith('Arrow')
-    // ) {
-    //   return;
-    // }
-    // if (!/[0-9]/.test(event.key)) {
-    //   event.preventDefault();
-    // }
+     if (this.type !== 'number') return;
+     if (
+       event.key === 'Backspace' ||
+       event.key === 'Delete' ||
+       event.key === 'Tab' ||
+       event.key.startsWith('Arrow')
+     ) {
+       return;
+     }
+    if (!/[0-9]/.test(event.key)) {
+       event.preventDefault();
+     }
   }
 
   onInput(event: Event) {

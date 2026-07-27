@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { SecondaryButtonComponent } from '../survey-page/showSurvey/secondary-button-component/secondary-button-component';
 import { PrimaryButtonComponent } from '../home-page/allSurveys/primary-button-component/primary-button-component';
@@ -58,101 +58,176 @@ export class CreateSurveys {
   ) {}
 
   @HostListener('window:resize')
-  onResize() {
+  onResize(): void {
     this.screenWidth = window.innerWidth;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     window.scrollTo(0, 0);
   }
 
-  onCheck(value: boolean, index: number) {
+  /**
+   * Updates the multiple-choice setting of a question.
+   * @param value Indicates whether multiple answers are allowed.
+   */
+  onCheck(value: boolean, index: number): void {
     this.questions[index].multiple_choice = value;
   }
 
-  goHome() {
+  goHome(): void {
     this.goto.goToHome();
   }
 
-  goToHome() {
+  goToHome(): void {
     this.router.navigate(['/']);
   }
 
-  deleteValue(field: string) {
+  /**
+   * Clears a value from the survey form.
+   * @param field Name of the survey field that should be cleared.
+   */
+  deleteValue(field: string): void {
     const fields = this.newSurvey as Record<string, string>;
     if (field in fields) fields[field] = '';
   }
 
-  onCategorySelected(id: number) {
+  /**
+   * Saves the selected category index.
+   * @param id Index of the selected category.
+   */
+  onCategorySelected(id: number): void {
     this.filter = id;
   }
 
-  addQuestion() {
-    if (this.questions.length < 10) this.questions.push(this.createEmptyQuestion());
+  addQuestion(): void {
+    if (this.questions.length < 10) {
+      this.questions.push(this.createEmptyQuestion());
+    }
   }
 
-  removeSection(index: number) {
+  /**
+   * Removes a question from the survey.
+   * @param index Index of the question that should be removed.
+   */
+  removeSection(index: number): void {
     this.questions.splice(index, 1);
   }
 
-  getCategory() {
+  getCategory(): void {
     const categories = this.categoriesService.getCategories();
     this.newSurvey.Category = categories[this.filter];
   }
 
-  async publishSurvey() {
+  /**
+   * If validation succeeds, the survey is saved in the database.
+   */
+  async publishSurvey(): Promise<void> {
     this.getCategory();
     const error = this.getValidationError();
-    if (error) return this.showResult(error);
+    if (error) {
+      this.showResult(error);
+      return;
+    }
     this.showResult('Your survey is now published');
     await this.saveToDB();
   }
 
+  /**
+   * Checks the complete survey form for validation errors.
+   * @returns The first validation error or an empty string.
+   */
   private getValidationError(): string {
     const surveyError = this.getSurveyError();
-    if (surveyError) return surveyError;
+    if (surveyError) {
+      return surveyError;
+    }
     return this.getQuestionsError();
   }
 
+  /**
+   * Validates the general survey information.
+   * @returns A combined error message or an empty string.
+   */
   private getSurveyError(): string {
     let error = '';
-    if (!this.newSurvey.SurveyName.trim()) error += 'Survey name missing. ';
-    if (!this.newSurvey.Category) error += 'Category missing. ';
-    if (!this.isEndDateValid()) error += 'End date must be today or in the future. ';
+    if (!this.newSurvey.SurveyName.trim()) {
+      error += 'Survey name missing. ';
+    }
+    if (!this.newSurvey.Category) {
+      error += 'Category missing. ';
+    }
+    if (!this.isEndDateValid()) {
+      error += 'End date must be today or in the future. ';
+    }
     return error;
   }
 
+  /**
+   * Checks whether the end date exists and is not in the past.
+   * @returns True when the end date is valid.
+   */
   private isEndDateValid(): boolean {
     const endDate = this.newSurvey.SetEndDate;
     return Boolean(endDate && endDate >= this.getToday());
   }
 
+  /**
+   * Validates every question in the survey.
+   * @returns The first question error or an empty string.
+   */
   private getQuestionsError(): string {
     for (let index = 0; index < this.questions.length; index++) {
       const error = this.getQuestionError(this.questions[index], index);
-      if (error) return error;
+      if (error) {
+        return error;
+      }
     }
     return '';
   }
 
-  private getQuestionError(question: SurveyQuestion, index: number): string {
+  /**
+   * Validates a single survey question.
+   * @param question Question that should be validated.
+   */
+  private getQuestionError(
+    question: SurveyQuestion,
+    index: number,
+  ): string {
     const prefix = `Question ${index + 1}: `;
-    if (!question.question_headline.trim()) return `${prefix}Headline missing. `;
-    if (this.getFilledAnswers(question).length < 2) return `${prefix}At least 2 answers required. `;
-    if (question.answers.some((answer) => !answer.trim())) return `${prefix}Empty answer found. `;
+    if (!question.question_headline.trim()) {
+      return `${prefix}Headline missing. `;
+    }
+    if (this.getFilledAnswers(question).length < 2) {
+      return `${prefix}At least 2 answers required. `;
+    }
+    if (question.answers.some((answer) => !answer.trim())) {
+      return `${prefix}Empty answer found. `;
+    }
     return '';
   }
 
+  /**
+   * Returns all non-empty answers of a question.
+   * @param question Question containing the answers.
+   */
   private getFilledAnswers(question: SurveyQuestion): string[] {
     return question.answers.filter((answer) => answer.trim());
   }
 
-  private showResult(message: string) {
+  /**
+   * Displays a success or validation message in the overlay.
+   * @param message Message that should be displayed.
+   */
+  private showResult(message: string): void {
     this.published = true;
     this.publishedOrError = message;
     this.showOverlay();
   }
 
+  /**
+   * Returns today's date in YYYY-MM-DD format.
+   * @returns Today's date as a formatted string.
+   */
   getToday(): string {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
@@ -160,13 +235,22 @@ export class CreateSurveys {
     return `${today.getFullYear()}-${month}-${day}`;
   }
 
-  async saveToDB() {
+  /**
+   * Saves the survey, questions and answers in the database.
+   */
+  async saveToDB(): Promise<void> {
     const survey = await this.createSurveyRecord();
-    if (!survey) return;
+    if (!survey) {
+      return;
+    }
     await this.saveQuestions(survey.id);
     this.resetCreateSurvey();
   }
 
+  /**
+   * Creates the main survey record in the database.
+   * @returns The created survey record.
+   */
   private createSurveyRecord() {
     return this.supabaseService.createSurvey({
       headline: this.newSurvey.SurveyName,
@@ -176,68 +260,129 @@ export class CreateSurveys {
     });
   }
 
-  private async saveQuestions(surveyId: string) {
+  /**
+   * Saves all survey questions in the database.
+   * @param surveyId ID of the created survey.
+   */
+  private async saveQuestions(surveyId: string): Promise<void> {
     for (const question of this.questions) {
       await this.saveQuestion(surveyId, question);
     }
   }
 
-  private async saveQuestion(surveyId: string, item: SurveyQuestion) {
+  /**
+   * Saves a single question and its answers.
+   * @param surveyId ID of the related survey.
+   */
+  private async saveQuestion(
+    surveyId: string,
+    item: SurveyQuestion,
+  ): Promise<void> {
     const question = await this.supabaseService.createQuestion({
       survey_id: surveyId,
       multiple_choice: item.multiple_choice,
       question_headline: item.question_headline,
     });
-    if (question) await this.saveAnswers(surveyId, question.id, item.answers);
-  }
-
-  private async saveAnswers(surveyId: string, questionId: string, answers: string[]) {
-    for (const answer of answers) {
-      await this.supabaseService.createAnswer({ survey_id: surveyId, question_id: questionId, answer_text: answer });
+    if (question) {
+      await this.saveAnswers(surveyId, question.id, item.answers);
     }
   }
 
-  resetCreateSurvey() {
+  /**
+   * Saves all answers belonging to a question.
+   * @param surveyId ID of the related survey.
+   */
+  private async saveAnswers(
+    surveyId: string,
+    questionId: string,
+    answers: string[],
+  ): Promise<void> {
+    for (const answer of answers) {
+      await this.supabaseService.createAnswer({
+        survey_id: surveyId,
+        question_id: questionId,
+        answer_text: answer,
+      });
+    }
+  }
+
+  resetCreateSurvey(): void {
     location.reload();
   }
 
-  showOverlay() {
+  showOverlay(): void {
     this.time = 5000;
     this.cdr.detectChanges();
-    setTimeout(() => this.hideOverlay(), this.time);
+    setTimeout(() => {
+      this.hideOverlay();
+    }, this.time);
   }
 
-  private hideOverlay() {
+  private hideOverlay(): void {
     this.published = false;
     this.cdr.detectChanges();
   }
 
-  onInputChange(event: { field: string; value: string }) {
-    if (this.updateSurveyField(event)) return;
-    if (event.field.startsWith('QuestionTitle_')) this.updateQuestionTitle(event);
-    if (event.field.startsWith('Answer_')) this.updateAnswer(event);
+  /**
+   * Processes value changes emitted by the input components.
+   * @param event Object containing the field name and new value.
+   */
+  onInputChange(event: { field: string; value: string }): void {
+    if (this.updateSurveyField(event)) {
+      return;
+    }
+    if (event.field.startsWith('QuestionTitle_')) {
+      this.updateQuestionTitle(event);
+    }
+    if (event.field.startsWith('Answer_')) {
+      this.updateAnswer(event);
+    }
   }
 
-  private updateSurveyField(event: { field: string; value: string }): boolean {
+  /**
+   * Updates a general survey field.
+   * @param event Object containing the field name and new value.
+   */
+  private updateSurveyField(
+    event: { field: string; value: string },
+  ): boolean {
     const fields = this.newSurvey as Record<string, string>;
-    if (!(event.field in fields)) return false;
+    if (!(event.field in fields)) {
+      return false;
+    }
     fields[event.field] = event.value;
     return true;
   }
 
-  private updateQuestionTitle(event: { field: string; value: string }) {
+  /**
+   * Updates the headline of a specific question.
+   * @param event Object containing the field name and new value.
+   */
+  private updateQuestionTitle(
+    event: { field: string; value: string },
+  ): void {
     const index = Number(event.field.split('_')[1]) - 1;
     this.questions[index].question_headline = event.value;
   }
 
-  private updateAnswer(event: { field: string; value: string }) {
-    const [_, question, answer] = event.field.split('_');
+  /**
+   * Updates a specific answer of a question.
+   * @param event Object containing the field name and new value.
+   */
+  private updateAnswer(
+    event: { field: string; value: string },
+  ): void {
+    const [, question, answer] = event.field.split('_');
     const questionIndex = Number(question) - 1;
     const answerIndex = answer.charCodeAt(0) - 65;
     this.questions[questionIndex].answers[answerIndex] = event.value;
   }
 
   private createEmptyQuestion(): SurveyQuestion {
-    return { question_headline: '', multiple_choice: false, answers: [] };
+    return {
+      question_headline: '',
+      multiple_choice: false,
+      answers: [],
+    };
   }
 }
