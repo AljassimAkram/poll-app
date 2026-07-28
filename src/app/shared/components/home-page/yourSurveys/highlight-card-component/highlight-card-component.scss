@@ -164,3 +164,13 @@
     font-size: 10px;
   }
 }
+
+@media (max-width: 450px) {
+  :host {
+    flex: 0 0 240px;
+  }
+
+  .survey-card {
+    height: 180px;
+  }
+}

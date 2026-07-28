@@ -40,17 +40,16 @@
                 "
               ></app-question-answer-component>
             }
-            <div class="completeSurvey" [class.display-none]="pastSurvey">
-              <app-primary-button-component [icon]="'check'" (click)="completeSurvey()"
-                >Complete Survey</app-primary-button-component
-              >
-            </div>
           </div>
-          <div></div>
+          <div class="completeSurvey">
+            <app-primary-button-component [icon]="'check'" (click)="completeSurvey()"
+              >Complete Survey</app-primary-button-component
+            >
+          </div>
         </div>
       </section>
 
-      <section class="survey-results" [style.height]="responsivOpenCloseToggle ? '750px' : '70px'">
+      <section class="survey-results" [class.results-collapsed]="!responsivOpenCloseToggle">
         <div class="OpenCloseResults" (click)="toggle()">
           <p>{{ responsivOpenCloseToggle === true ? 'Close results' : 'Open results' }}</p>
           <svg
@@ -68,7 +67,10 @@
           </svg>
         </div>
 
-        <div [class.display-none]="!responsivOpenCloseToggle">
+        <div
+          class="survey-results-content"
+          [class.display-none]="!responsivOpenCloseToggle"
+        >
           <div class="survey-results-headline">
             <p>
               Survey results

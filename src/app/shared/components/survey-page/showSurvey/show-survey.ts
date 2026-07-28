@@ -6,7 +6,6 @@ import { QuestionAnswerComponent } from './question-answer-component/question-an
 import { ActivatedRoute, Router } from '@angular/router';
 import { SupabaseServieces } from '../../../services/supabase-servieces';
 import { ResultsComponent } from './results-component/results-component';
-import { SecondaryButtonComponent } from './secondary-button-component/secondary-button-component';
 
 @Component({
   selector: 'app-show-survey',
@@ -15,10 +14,9 @@ import { SecondaryButtonComponent } from './secondary-button-component/secondary
     PrimaryButtonComponent,
     QuestionAnswerComponent,
     ResultsComponent,
-    SecondaryButtonComponent,
   ],
   templateUrl: './show-survey.html',
-  styleUrl: './show-survey.scss',
+  styleUrls: ['./show-survey.scss', './show-survey-responsive.scss'],
 })
 export class ShowSurvey {
   constructor(

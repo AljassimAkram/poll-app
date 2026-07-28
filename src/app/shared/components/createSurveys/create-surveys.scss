@@ -18,10 +18,8 @@
   background-color: rgba(53, 39, 58, 1);
   border-radius: 5px;
   border-top-right-radius: 100px;
-
   width: auto;
-  height: 620px;
-  padding: 40px 60px 130px;
+  padding: 25px 45px 20px;
 }
 
 .create-main-header {
@@ -99,7 +97,6 @@
   display: flex;
   flex-direction: column;
 }
-
 .space {
   margin-bottom: 10px;
 }
@@ -127,7 +124,6 @@ app-input-field-component {
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
-
 .create-main-bottom {
   display: flex;
   align-items: center;
@@ -300,4 +296,3 @@ app-input-field-component {
     right: -20px;
   }
 }
-

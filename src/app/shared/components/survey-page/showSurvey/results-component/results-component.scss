@@ -48,3 +48,27 @@
   font-weight: var(--font-weight-700);
   color: var(--font-color-deep-yellow);
 }
+
+@media (max-width: 1250px) {
+  .bar-bg {
+    width: 200px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .bar-bg {
+    width: 175px;
+  }
+}
+
+@media (max-width: 1020px) {
+  .bar-bg {
+    width: 160px;
+  }
+}
+
+@media (max-width: 960px) {
+  .bar-bg {
+    width: 250px;
+  }
+}
