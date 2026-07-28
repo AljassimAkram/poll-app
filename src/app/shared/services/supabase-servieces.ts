@@ -71,9 +71,12 @@ export class SupabaseServieces {
       .eq('id', answerId)
       .single();
 
+    const currentClicks = Math.max(0, Number(data?.clicked) || 0);
+    const nextClicks = Math.max(0, currentClicks + (add ? 1 : -1));
+
     await this.supabase
       .from('answers')
-      .update({ clicked: (data?.clicked ?? 0) + (add ? 1 : -1) })
+      .update({ clicked: nextClicks })
       .eq('id', answerId);
   }
 

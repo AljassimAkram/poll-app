@@ -67,10 +67,15 @@
 }
 
 .survey-headline {
+  width: 100%;
+  min-width: 0;
   margin-bottom: 40px;
 
   p {
+    max-width: 100%;
     margin: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     font-family: var(--font-family-NerkoOne);
     font-size: 56px;
     color: var(--font-color-deep-yellow);
@@ -90,6 +95,11 @@
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   overflow: visible;
+}
+
+.survey-answer-list > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 .completeSurvey {
@@ -122,13 +132,18 @@
 }
 
 .survey-results-headline {
+  width: 100%;
+  min-width: 0;
   flex: 0 0 auto;
   margin-bottom: 15px;
   font-family: var(--font-family-NerkoOne);
   font-size: var(--font-size-32);
 
   p {
+    max-width: 100%;
     margin: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
     color: var(--font-color-dark-purple);
   }
 

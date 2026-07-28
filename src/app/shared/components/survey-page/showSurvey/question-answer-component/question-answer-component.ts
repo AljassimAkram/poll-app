@@ -31,17 +31,17 @@ export class QuestionAnswerComponent {
     return String.fromCharCode(65 + i);
   }
 
-  onSingleAnswerSelected(checked: boolean, answerId: number) {
+  async onSingleAnswerSelected(checked: boolean, answerId: number) {
     if (!checked && this.selectedAnswer === answerId) {
-      this.supabaseService.updatedClickedAnswerInDB(answerId, false);
+      await this.supabaseService.updatedClickedAnswerInDB(answerId, false);
       this.selectedAnswer = null;
     } else if (checked) {
       if (this.selectedAnswer !== null) {
-        this.supabaseService.updatedClickedAnswerInDB(this.selectedAnswer, false);
+        await this.supabaseService.updatedClickedAnswerInDB(this.selectedAnswer, false);
       }
 
       this.selectedAnswer = answerId;
-      this.supabaseService.updatedClickedAnswerInDB(answerId, true);
+      await this.supabaseService.updatedClickedAnswerInDB(answerId, true);
     }
   }
 
@@ -50,15 +50,15 @@ export class QuestionAnswerComponent {
    * Removes previous selection in database.
    * Sets new selected answer.
    */
-  onMultipleAnswerSelected(checked: boolean, answerId: number) {
+  async onMultipleAnswerSelected(checked: boolean, answerId: number) {
     if (checked) {
       if (!this.selectedAnswers.includes(answerId)) {
         this.selectedAnswers.push(answerId);
-        this.supabaseService.updatedClickedAnswerInDB(answerId, true);
+        await this.supabaseService.updatedClickedAnswerInDB(answerId, true);
       }
     } else {
       this.selectedAnswers = this.selectedAnswers.filter((id) => id !== answerId);
-      this.supabaseService.updatedClickedAnswerInDB(answerId, false);
+      await this.supabaseService.updatedClickedAnswerInDB(answerId, false);
     }
   }
 }

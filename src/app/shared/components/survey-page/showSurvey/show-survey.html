@@ -87,7 +87,7 @@
                     answers
                       .filter((a) => a.question_id === item.id)
                       .map((a) => ({
-                        percentage: counters[item.id] ? (a.clicked / counters[item.id]) * 100 : 0,
+                        percentage: getPercentage(a),
                       }))
                   "
                 ></app-results-component>

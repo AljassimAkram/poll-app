@@ -131,12 +131,15 @@ export class ShowSurvey {
 
     for (let i = 0; i < this.answers.length; i++) {
       const qId = this.answers[i].question_id;
-
-      if (!this.counters[qId]) {
-        this.counters[qId] = 0;
-      }
-      this.counters[qId] += this.answers[i].clicked;
+      const clicks = Math.max(0, Number(this.answers[i].clicked) || 0);
+      this.counters[qId] = (this.counters[qId] || 0) + clicks;
     }
+  }
+
+  getPercentage(answer: any): number {
+    const clicks = Math.max(0, Number(answer.clicked) || 0);
+    const total = this.counters[answer.question_id] || 0;
+    return total > 0 ? (clicks / total) * 100 : 0;
   }
 
   /**

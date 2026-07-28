@@ -23,10 +23,13 @@
         (mouseenter)="isHovered = true"
         (mouseleave)="isHovered = false"
     >
-      <img
-        [src]="isHovered ? 'assets/img/Property_2.png' : 'assets/img/Property_1.png'"
-        alt="Umfragen"
-      />
+      <picture>
+        <source media="(max-width: 800px)" srcset="assets/img/Property_2.png" />
+        <img
+          [src]="isHovered ? 'assets/img/Property_2.png' : 'assets/img/Property_1.png'"
+          alt="Umfragen"
+        />
+      </picture>
     </div>
   </section>
 

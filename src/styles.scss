@@ -1,7 +1,10 @@
 html,
 body {
   height: 100%;
+  width: 100%;
+  max-width: 100%;
   margin: 0;
+  overflow-x: hidden;
 }
 
 body.home {
@@ -24,9 +27,31 @@ span {
 }
 
 img {
+  max-width: 100%;
   -webkit-user-drag: none;
   user-drag: none;
   pointer-events: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+label {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+input,
+textarea,
+select,
+button {
+  max-width: 100%;
 }
 
 input::selection {
@@ -35,6 +60,7 @@ input::selection {
 }
 
 .wrapper {
+  width: 100%;
   min-height: 90vh;
   max-width: 1218px;
   margin: 0 auto;
@@ -167,11 +193,8 @@ input::selection {
   }
 }
 
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }

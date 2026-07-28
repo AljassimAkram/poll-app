@@ -52,6 +52,7 @@
   align-self: flex-end;
   margin-top: -500px;
 
+  picture,
   img {
     display: block;
     width: 100%;
@@ -108,6 +109,7 @@
 .allSurveys {
   max-width: 1024px;
   width: 100%;
+  min-width: 0;
   padding-top: 25px;
 }
 
@@ -118,6 +120,8 @@
 }
 
 .allSurveysList {
+  width: 100%;
+  min-width: 0;
   margin-top: 40px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -131,6 +135,8 @@
 .allSurveysList > * {
   display: flex;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .allSurveysList > *:nth-child(odd) {

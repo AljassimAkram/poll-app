@@ -1,15 +1,22 @@
 section {
+  width: 100%;
   max-width: 300px;
+  min-width: 0;
   font-family: var(--font-family-Mulish);
   font-size: var(--font-size-18);
   color: var(--font-color-dark-purple);
   margin-bottom: 20px;
 
   p {
+    max-width: 100%;
     margin: 0px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   div {
+    width: 100%;
+    min-width: 0;
     display: flex;
     align-items: start;
     flex-direction: column;
@@ -26,17 +33,22 @@ section {
 }
 
 .answers {
+  width: 100%;
+  min-width: 0;
   display: flex;
   align-items: center;
   flex-direction: column;
   margin-top: 15px;
 
   app-checkbox-component {
+    width: 100%;
+    min-width: 0;
     display: flex;
     align-items: center;
     margin: 5px 0px;
 
     p {
+      min-width: 0;
       margin-left: 10px;
       font-size: var(--font-size-16) !important;
       font-weight: var(--font-weight-400) !important;

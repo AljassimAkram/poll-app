@@ -46,6 +46,5 @@ export class CheckboxComponent {
   changeValueOnDB(answer: { text: string; id: number }) {
     this.checkedCheckbox = !this.checkedCheckbox;
     this.checkedChange.emit(this.checkedCheckbox);
-    this.supabaseService.updatedClickedAnswerInDB(answer.id, this.checkedCheckbox);
   }
 }

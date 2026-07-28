@@ -1,5 +1,7 @@
 .survey-list-card {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 127px;
 
   display: flex;
@@ -24,6 +26,7 @@
 
 .survey-list-card__content {
   width: 100%;
+  min-width: 0;
 
   display: flex;
   flex-direction: column;
@@ -31,6 +34,8 @@
 }
 
 .survey-list-card__text {
+  width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -40,12 +45,18 @@
 }
 
 .survey-list-card__title {
+  width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   font-family: var(--font-family-Mulish);
   font-size: var(--font-size-16);
   color: var(--background-color-medium-yellow);
 }
 
 .survey-list-card__description {
+  width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   font-family: var(--font-family-Mulish);
   font-size: clamp(var(--font-size-20), 2vw, var(--font-size-24));
   font-weight: var(--font-weight-500);
@@ -81,4 +92,3 @@
 .survey-status--dark {
   background-color: var(--background-color-medium-yellow);
 }
-
