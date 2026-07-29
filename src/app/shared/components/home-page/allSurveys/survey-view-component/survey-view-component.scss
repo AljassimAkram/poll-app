@@ -17,10 +17,15 @@
   background-color: rgba(217, 217, 217, 0.08);
 
   cursor: pointer;
-  transition: var(--transition-smooth-and-bg-025);
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 
   &:hover {
     background-color: rgba(217, 217, 217, 0.16);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   }
 }
 

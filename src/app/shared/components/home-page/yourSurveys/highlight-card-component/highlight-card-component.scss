@@ -18,10 +18,15 @@
   font-family: var(--font-family-Mulish);
   cursor: pointer;
 
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 
   &:hover {
     background-color: var(--background-color-light-purple);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(53, 39, 58, 0.16);
 
     .survey-status {
       background-color: var(--background-color-medium-yellow);
@@ -85,45 +90,45 @@
   background-color: var(--background-color-medium-yellow);
 }
 
-@media (max-width: 1250px){
+@media (max-width: 1250px) {
   .survey-card {
     width: 301px;
-  height: 290px;
+    height: 290px;
   }
 }
 
-@media (max-width: 1150px){
+@media (max-width: 1150px) {
   .survey-card {
     width: 281px;
-  height: 270px;
+    height: 270px;
   }
 }
 
-@media (max-width: 1080px){
+@media (max-width: 1080px) {
   .survey-card {
     width: 261px;
-  height: 250px;
+    height: 250px;
   }
 }
 
-@media (max-width: 1035px){
+@media (max-width: 1035px) {
   .survey-card {
     width: 251px;
-  height: 240px;
+    height: 240px;
   }
 }
 
-@media (max-width: 1000px){
+@media (max-width: 1000px) {
   .survey-card {
     width: 241px;
-  height: 230px;
+    height: 230px;
   }
 }
 
-@media (max-width: 980px){
+@media (max-width: 980px) {
   .survey-card {
     width: 231px;
-  height: 220px;
+    height: 220px;
   }
 }
 
@@ -149,7 +154,7 @@
   }
 
   .survey-card__title {
-    font-size: var(--font-size-12);
+    font-size: var(--font-size-16);
   }
 
   .survey-card__description {
@@ -158,10 +163,8 @@
   }
 
   .survey-status {
-    min-width: 0;
-    height: 22px;
-    padding: 0 8px;
-    font-size: 10px;
+    font-size: var(--font-size-16);
+    height: 30px;
   }
 }
 

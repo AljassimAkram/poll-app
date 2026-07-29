@@ -1,36 +1,51 @@
 section {
-  width: 357px;
+  position: relative;
+  width: min(500px, calc(100vw - 32px));
+  max-width: 500px;
   min-height: 86px;
   height: auto;
+
+  display: flex;
+  align-items: flex-start;
+
+  padding: 14px 60px 14px 20px;
+  box-sizing: border-box;
+
   background-color: var(--background-color-light-yellow);
   border-radius: 5px;
   border-top-right-radius: 50px;
-  box-sizing: border-box;
-  padding: 14px 60px 14px 20px;
-  display: flex;
-  align-items: start;
-  display:none;
+
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   transform: translateY(-10px);
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s ease;
 
   div {
     font-family: var(--font-family-NerkoOne);
     font-size: var(--font-size-24);
     font-weight: var(--font-weight-400);
     color: var(--font-color-dark-purple);
+    overflow-wrap: anywhere;
   }
+
   svg {
-    position: fixed;
-    cursor: pointer;
-    height: 20px;
+    position: absolute;
+    top: 18px;
+    right: 22px;
     width: 20px;
-    right: 40px;
+    height: 20px;
+    cursor: pointer;
   }
-  transition: all 0.25s ease;
 }
 
 section.show {
-  display: flex;
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
   transform: translateY(0);
 }

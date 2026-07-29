@@ -1,59 +1,233 @@
 # PollApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
+PollApp is a responsive web application for creating, publishing and participating in online surveys. Users can create surveys with different questions, select categories and define an end date. Survey participants can submit answers and view the current results.
+
+## Features
+
+- Create and publish new surveys
+- Add up to ten questions to a survey
+- Add multiple answers to each question
+- Support for single-choice questions
+- Support for multiple-choice questions
+- Select a category for every survey
+- Set an end date
+- Validate the survey before publishing
+- Display clear validation messages
+- Vote on active surveys
+- Display survey results and percentages
+- Filter surveys by category
+- Filter active and past surveys
+- Responsive design for desktop, tablet and mobile devices
+- Store surveys, questions and answers with Supabase
+
+## Technologies
+
+The project was developed with:
+
+- Angular
+- TypeScript
+- HTML
+- SCSS
+- Supabase
+- Angular Router
+- RxJS
+- npm
+
+## Requirements
+
+Before starting the project, make sure the following programs are installed:
+
+- Node.js
+- npm
+- Angular CLI
+- Git
+
+You can check the installed versions with:
+
+```bash
+node --version
+npm --version
+ng version
+git --version
+```
+
+## Installation
+
+### 1. Clone the repository
+
+```bash
+git clone YOUR_REPOSITORY_URL
+```
+
+### 2. Open the project folder
+
+```bash
+cd poll-app
+```
+
+### 3. Install dependencies
+
+```bash
+npm install
+```
 
 ## Development server
 
-To start a local development server, run:
+Start the local development server with:
+
+```bash
+npm start
+```
+
+Alternatively, you can use:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open the application in your browser:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```text
+https://akram-aljassim.de/PollApp/
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The application automatically reloads when source files are changed.
 
-```bash
-ng generate --help
+## Application routes
+
+The application uses Angular routing.
+
+| Route | Description |
+|---|---|
+| `/` | Displays all available surveys |
+| `/survey/:id` | Opens a selected survey |
+| `/create` | Opens the form for creating a survey |
+
+## Creating a survey
+
+To create a new survey:
+
+1. Open the **New Survey** page.
+2. Enter a survey name.
+3. Enter an optional description.
+4. Choose a category.
+5. Select an end date.
+6. Enter a question.
+7. Add at least two possible answers.
+8. Decide whether multiple answers are allowed.
+9. Add more questions if required.
+10. Select **Publish**.
+
+The form checks that all required information has been entered before saving the survey.
+
+## Survey validation
+
+Before a survey is published, the application checks:
+
+- A survey name is entered.
+- A category is selected.
+- The end date is today or in the future.
+- Every question has a headline.
+- Every question contains at least two answers.
+- No answer field is empty.
+
+If validation fails, an error message is displayed.
+
+## Database
+
+PollApp uses Supabase as its backend and database.
+
+The application stores:
+
+- Surveys
+- Questions
+- Possible answers
+- Submitted votes
+- Survey categories
+- Survey end dates
+
+The Supabase services are located in:
+
+```text
+src/app/shared/services/
 ```
 
-## Building
+## Production build
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Create an optimized production build with:
 
 ```bash
-ng test
+npm run build
 ```
 
-## Running end-to-end tests
+The generated production files can be found in:
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+```text
+dist/pollApp/browser/
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Deployment
 
-## Additional Resources
+The generated files from the production build can be uploaded to a web server using an FTP program such as FileZilla.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+When the application is deployed inside a subfolder, the correct base path must be configured in `src/index.html`.
+
+Example:
+
+```html
+<base href="/PollApp/">
+```
+
+For Apache servers, an `.htaccess` file is required so that Angular routes continue to work after refreshing the page.
+
+Example:
+
+```apache
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /PollApp/
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  RewriteRule ^ /PollApp/index.html [L]
+</IfModule>
+```
+
+The `.htaccess` file should be stored here:
+
+```text
+public/.htaccess
+```
+
+## Responsive design
+
+PollApp is optimized for different screen sizes:
+
+- Desktop computers
+- Tablets
+- Smartphones
+- Small mobile devices starting at approximately 320 pixels
+
+The layout, cards, buttons, forms and survey results adapt to the available screen width.
+
+## Available scripts
+
+| Command | Description |
+|---|---|
+| `npm start` | Starts the development server |
+| `npm run build` | Creates the production build |
+| `npm run watch` | Builds the project and watches for changes |
+| `npm test` | Runs the automated tests |
+
+## Browser support
+
+The application is intended for modern browsers, including:
+
+- Google Chrome
+
+## Author
+
+**Akram Al Jassim**
+
+Frontend Developer

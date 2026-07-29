@@ -1,35 +1,49 @@
 button {
   height: 48px;
-  border-radius: 10px;
   border: none;
+  border-radius: 10px;
   padding: 0 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
   font-family: var(--font-family-nokora);
   font-size: var(--font-size-18);
   font-weight: var(--font-weight-700);
   line-height: 1;
   text-align: start;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--background-color-light-yellow);
   white-space: nowrap;
+
+  background-color: var(--background-color-light-yellow);
   cursor: pointer;
-  gap: 12px;
+
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease;
 
   svg {
-    display: none;
-    width: 20px;
+    display: block;
+    width: 0;
     height: 20px;
 
     opacity: 0;
+    overflow: hidden;
     transform: translateX(-8px);
+
+    transition:
+      width 0.25s ease,
+      opacity 0.25s ease,
+      transform 0.25s ease;
   }
 
   &:hover {
     background-color: var(--background-color-deep-yellow);
+    transform: translateY(-2px);
 
     svg {
-      display: block;
+      width: 20px;
       opacity: 1;
       transform: translateX(0);
     }
@@ -39,10 +53,11 @@ button {
 @media (max-width: 800px) {
   button {
     background-color: var(--background-color-deep-yellow);
+
     svg {
-      display: flex;
+      width: 20px;
       opacity: 1;
-      transform: translateX(0px);
+      transform: translateX(0);
     }
   }
 }
