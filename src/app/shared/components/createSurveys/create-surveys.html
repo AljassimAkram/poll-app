@@ -30,8 +30,13 @@
 
       <div>
         <p>Create new survey</p>
-        <app-secondary-button-component (click)="goToHome()">Cancel <img src="assets/img/close.png
-          " alt=""></app-secondary-button-component>
+        <app-secondary-button-component (click)="goToHome()"
+          >Cancel
+          <img
+            src="assets/img/close.png
+          "
+            alt=""
+        /></app-secondary-button-component>
       </div>
     </div>
     <div class="create-main-survey">
@@ -117,9 +122,11 @@
     </div>
   </section>
 
-  <div class="overlay">
-    <app-overlay-component [published]="published" (close)="published = false">{{
-      publishedOrError
-    }}</app-overlay-component>
-  </div>
+  @if (published) {
+    <div class="overlay">
+      <app-overlay-component [published]="published" (close)="published = false">
+        {{ publishedOrError }}
+      </app-overlay-component>
+    </div>
+  }
 </div>

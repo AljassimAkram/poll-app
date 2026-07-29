@@ -5,7 +5,6 @@
 
 .home {
   background-color: var(--background-color);
-  padding: 40px 110px 90px;
 }
 
 .infoSection {
@@ -112,6 +111,7 @@
   width: 100%;
   min-width: 0;
   padding-top: 25px;
+  padding-bottom: 120px;
 }
 
 .allSurveysHeader {
@@ -128,9 +128,8 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
 
-  max-height: 413px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  max-height: none;
+  overflow: visible;
 }
 
 .allSurveysList > * {
