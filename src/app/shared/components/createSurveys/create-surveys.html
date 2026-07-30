@@ -51,7 +51,7 @@
               [maxLength]="300"
             ></app-input-field-component>
             <app-delete-button-component
-              (click)="deleteValue('SurveyName')"
+              (deleteClick)="deleteValue('SurveyName')"
             ></app-delete-button-component>
           </div>
 
@@ -66,7 +66,7 @@
               ></app-input-field-component>
 
               <app-delete-button-component
-                (click)="deleteValue('SetEndDate')"
+                (deleteClick)="deleteValue('SetEndDate')"
               ></app-delete-button-component>
             </div>
 
@@ -88,20 +88,26 @@
               (valueChanged)="onInputChange($event)"
             ></app-input-field-component>
             <app-delete-button-component
-              (click)="deleteValue('DescribingText')"
+              (deleteClick)="deleteValue('DescribingText')"
             ></app-delete-button-component>
           </div>
         </div>
       </div>
 
       <div class="create-main-survey-answers">
-        @for (item of questions; track $index; let i = $index) {
+        @for (item of questions; track item.id; let i = $index) {
           <app-create-question-component
-            (checkboxChange)="onCheck($event, i)"
-            (destroy)="removeSection(i)"
+            (checkboxChange)="onCheck($event, item.id)"
+            (destroy)="removeSection($event)"
+            (addAnswer)="addAnswer($event)"
+            (removeAnswer)="removeAnswer($event.questionId, $event.answerId)"
             (valueChanged)="onInputChange($event)"
+            [questionId]="item.id"
             [questionNumber]="i + 1"
             [canDelete]="questions.length > 1"
+            [questionTitle]="item.question_headline"
+            [answers]="item.answers"
+            [allowMultiple]="item.multiple_choice"
           ></app-create-question-component>
         }
 

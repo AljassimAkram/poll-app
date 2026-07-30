@@ -169,6 +169,7 @@ export class ShowSurvey {
    */
   getEndDate() {
     const endDay = this.survey.endsDay;
+    if (!endDay) return '';
     const [year, month, day] = endDay.split('-');
     return `${day}.${month}.${year}`;
   }

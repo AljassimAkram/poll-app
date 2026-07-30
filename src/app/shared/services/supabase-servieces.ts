@@ -104,12 +104,11 @@ export class SupabaseServieces {
   async createSurvey(survey: {
     category: string;
     headline: string;
-    endsDay: string;
+    endsDay: string | null;
     description: string;
   }) {
     const { data, error } = await this.supabase.from('surveys').insert(survey).select().single();
-    if (error) console.error(error);
-    return data;
+    return error ? null : data;
   }
 
   /**

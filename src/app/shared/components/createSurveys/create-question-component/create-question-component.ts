@@ -18,17 +18,16 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './create-question-component.scss',
 })
 export class CreateQuestionComponent {
+  @Input() questionId = 0;
   @Input() questionNumber = 1;
   @Input() canDelete = false;
+  @Input() questionTitle = '';
+  @Input() answers: { id: number; text: string }[] = [];
+  @Input() allowMultiple = false;
   @Output() valueChanged = new EventEmitter<{ field: string; value: string }>();
-  @Output() destroy = new EventEmitter<void>();
-  questions = [1, 2];
-  question = {
-    title: '',
-    allowMultiple: false,
-    answers: ['', ''],
-  };
-
+  @Output() destroy = new EventEmitter<number>();
+  @Output() addAnswer = new EventEmitter<number>();
+  @Output() removeAnswer = new EventEmitter<{ questionId: number; answerId: number }>();
   @Output() checkboxChange = new EventEmitter<boolean>();
 
   /**
@@ -36,7 +35,7 @@ export class CreateQuestionComponent {
    * Used to remove this section.
    */
   destroySection() {
-    this.destroy.emit();
+    this.destroy.emit(this.questionId);
   }
 
   /**
@@ -52,21 +51,15 @@ export class CreateQuestionComponent {
    * Limit is 5 questions.
    */
   addQuestion() {
-    if (this.questions.length < 5) {
-      this.questions.push(this.questions.length + 1);
-    }
+    this.addAnswer.emit(this.questionId);
   }
 
   /**
    * Removes a question by index.
    * Only allows removal if index is 2 or higher.
    */
-  deleteQuestion(i: number) {
-    if (this.questions.length <= 1) {
-      return;
-    }
-
-    this.questions.splice(i, 1);
+  deleteQuestion(answerId: number) {
+    this.removeAnswer.emit({ questionId: this.questionId, answerId });
   }
 
   /**

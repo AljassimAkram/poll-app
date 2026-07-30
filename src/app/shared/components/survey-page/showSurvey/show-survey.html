@@ -18,7 +18,9 @@
 
             </div>
             <div>
-              <p>Ends on {{ getEndDate() }}</p>
+              @if (survey.endsDay) {
+                <p>Ends on {{ getEndDate() }}</p>
+              }
               <p>Category: {{ survey.category }}</p>
             </div>
           </div>

@@ -2,35 +2,44 @@
   <div class="question-header">
     <p>{{ questionNumber }}. Question</p>
     @if (canDelete) {
-      <app-delete-button-component (click)="destroySection()"></app-delete-button-component>
+      <app-delete-button-component
+        (deleteClick)="destroySection()"
+      ></app-delete-button-component>
     }
   </div>
   <app-input-field-component
-    fieldName="QuestionTitle_{{ questionNumber }}"
+    fieldName="QuestionTitle_{{ questionId }}"
     (valueChanged)="onChildChange($event)"
     [maxLength]="300"
+    [value]="questionTitle"
   ></app-input-field-component>
   <div class="question-body">
     <div>
       <p>Answers</p>
-      <app-checkbox-component (checkedChange)="checkboxChange.emit($event)" borderColor="#FFFFF0"
+      <app-checkbox-component
+        (checkedChange)="checkboxChange.emit($event)"
+        [checkedCheckbox]="allowMultiple"
+        borderColor="#FFFFF0"
         >Allow multiple answers</app-checkbox-component
       >
     </div>
-    @for (item of questions; track $index; let i = $index) {
+    @for (item of answers; track item.id; let i = $index) {
       <div>
         <p>{{ getLetterFromNumber(i) }}.</p>
         <app-input-field-component
           class="answerInput"
-          fieldName="Answer_{{ questionNumber }}_{{ getLetterFromNumber(i) }}"
+          fieldName="Answer_{{ questionId }}_{{ item.id }}"
           (valueChanged)="onChildChange($event)"
           [maxLength]="300"
+          [value]="item.text"
         >
         </app-input-field-component>
-        <app-delete-button-component (click)="deleteQuestion(i)"></app-delete-button-component>
+        <app-delete-button-component
+          (deleteClick)="deleteQuestion(item.id)"
+        ></app-delete-button-component>
       </div>
     }
-    @if (questions.length < 5) {
+    @if (answers.length < 5) {
       <div
         class="add-question-position"
         [class.add-question-right]="questionNumber % 2 !== 0"

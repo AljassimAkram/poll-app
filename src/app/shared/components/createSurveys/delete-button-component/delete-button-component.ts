@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-delete-button-component',
@@ -6,4 +6,12 @@ import { Component } from '@angular/core';
   templateUrl: './delete-button-component.html',
   styleUrl: './delete-button-component.scss',
 })
-export class DeleteButtonComponent {}
+export class DeleteButtonComponent {
+  @Output() deleteClick = new EventEmitter<void>();
+
+  onDelete(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.deleteClick.emit();
+  }
+}
