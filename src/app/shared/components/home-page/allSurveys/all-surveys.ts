@@ -47,26 +47,34 @@ export class AllSurveys {
   }
 
   private async loadSurveys() {
-    const pastSurveys = this.getPastSurveys();
     const surveys = await this.supabaseService.getSurveys();
-    this.surveys = surveys.map((survey) => this.prepareSurvey(survey, pastSurveys));
+    const completed = this.getCompletedSurveys();
+    this.surveys = surveys.map((survey) => this.prepareSurvey(survey, completed));
   }
 
-  private getPastSurveys(): string[] {
+  /** Returns stable completion keys stored in this browser. */
+  private getCompletedSurveys(): string[] {
     return JSON.parse(localStorage.getItem('pastSurveys') || '[]');
   }
 
-  private prepareSurvey(survey: any, pastSurveys: string[]) {
+  /** Adds calculated state to one survey. */
+  private prepareSurvey(survey: any, completed: string[]) {
     return {
       ...survey,
       daysLeft: this.getDaysLeft(survey.endsDay),
-      isParticipated: pastSurveys.includes(String(survey.id)),
+      isParticipated: completed.includes(this.getSurveyKey(survey)),
     };
+  }
+
+  /** Builds a key that old reused database IDs cannot match. */
+  private getSurveyKey(survey: any): string {
+    const version = survey.created_at || survey.headline;
+    return `${survey.id}:${version}:${survey.endsDay || ''}`;
   }
 
   private setEndingSoonSurveys() {
     this.surveysEndingSoon = this.surveys
-      .filter((survey) => survey.daysLeft >= 0)
+      .filter((survey) => survey.daysLeft >= 0 && !survey.isParticipated)
       .sort((a, b) => a.daysLeft - b.daysLeft)
       .slice(0, 3);
   }
@@ -89,6 +97,7 @@ export class AllSurveys {
   }
 
   getDaysLeft(dateStr: string): number {
+    if (!dateStr) return Number.POSITIVE_INFINITY;
     const endDate = new Date(dateStr);
     const today = new Date();
     return Math.ceil((endDate.getTime() - today.getTime()) / 86400000);

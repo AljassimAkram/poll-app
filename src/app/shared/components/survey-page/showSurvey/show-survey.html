@@ -13,7 +13,7 @@
           <div class="survey-answer-info">
             <div>
               <span class="survey-status survey-status--dark" [class.shake]="shake">
-                {{ pastSurvey ? 'Done' : 'Published' }}
+                {{ pastSurvey ? 'Closed' : 'Published' }}
               </span>
 
             </div>
@@ -44,13 +44,11 @@
               ></app-question-answer-component>
             }
           </div>
-          @if (!pastSurvey) {
-            <div class="completeSurvey">
-              <app-primary-button-component [icon]="'check'" (click)="completeSurvey()"
-                >Complete Survey</app-primary-button-component
-              >
-            </div>
-          }
+          <div class="completeSurvey">
+            <app-primary-button-component [icon]="'check'" (click)="completeSurvey()">
+              {{ pastSurvey ? 'Survey closed' : 'Complete Survey' }}
+            </app-primary-button-component>
+          </div>
         </div>
       </section>
 

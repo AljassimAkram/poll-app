@@ -1,7 +1,7 @@
 section {
   position: relative;
-  width: min(500px, calc(100vw - 32px));
-  max-width: 500px;
+  width: min(300px, calc(100vw - 32px));
+  max-width: 300px;
   min-height: 86px;
   height: auto;
 
@@ -36,7 +36,7 @@ section {
   svg {
     position: absolute;
     top: 18px;
-    right: 22px;
+    right: 20px;
     width: 20px;
     height: 20px;
     cursor: pointer;

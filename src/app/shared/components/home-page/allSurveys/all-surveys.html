@@ -93,7 +93,9 @@
               [description]="item.headline"
               [dayText]="
                 activeSurveyFilter
-                  ? 'Ends in ' + item.daysLeft + (item.daysLeft === 1 ? ' Day' : ' Days')
+                  ? item.endsDay
+                    ? 'Ends in ' + item.daysLeft + (item.daysLeft === 1 ? ' Day' : ' Days')
+                    : 'No end date'
                   : 'Survey is closed'
               "
             >

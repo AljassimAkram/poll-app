@@ -58,7 +58,7 @@ export class ShowSurvey {
     if (!(await this.loadSurvey(id))) return this.goToHomePage();
     await this.loadSurveyDetails(id);
     this.subscribeToAnswers();
-    this.setPastSurveyState(id);
+    this.setPastSurveyState();
   }
 
   private getSurveyId(): string | null {
@@ -85,10 +85,27 @@ export class ShowSurvey {
     this.channel = this.supabaseService.subscribeAnswers(() => this.loadStatisticsFromDB());
   }
 
-  private setPastSurveyState(id: string) {
-    const pastSurveys = JSON.parse(localStorage.getItem('pastSurveys') || '[]');
-    this.pastSurvey = pastSurveys.includes(id);
+  private setPastSurveyState() {
+    const endDay = this.survey?.endsDay;
+    const completed = this.getCompletedSurveys().includes(this.getSurveyKey());
+    this.pastSurvey = Boolean(endDay && endDay < this.getToday()) || completed;
     if (this.pastSurvey) this.cdr.detectChanges();
+  }
+
+  /** Returns stable completion keys stored in this browser. */
+  private getCompletedSurveys(): string[] {
+    return JSON.parse(localStorage.getItem('pastSurveys') || '[]');
+  }
+
+  /** Builds a key that old reused database IDs cannot match. */
+  private getSurveyKey(): string {
+    const version = this.survey.created_at || this.survey.headline;
+    return `${this.survey.id}:${version}:${this.survey.endsDay || ''}`;
+  }
+
+  /** Returns today's date in YYYY-MM-DD format. */
+  private getToday(): string {
+    return new Date().toISOString().split('T')[0];
   }
 
   pastSurveyInfo() {
@@ -200,10 +217,12 @@ export class ShowSurvey {
   }
 
   private markSurveyAsCompleted() {
-    const id = this.route.snapshot.paramMap.get('id');
-    const pastSurveys = JSON.parse(localStorage.getItem('pastSurveys') || '[]');
-    if (id && !pastSurveys.includes(id)) pastSurveys.push(id);
+    const pastSurveys = this.getCompletedSurveys();
+    const key = this.getSurveyKey();
+    if (!pastSurveys.includes(key)) pastSurveys.push(key);
     localStorage.setItem('pastSurveys', JSON.stringify(pastSurveys));
+    this.pastSurvey = true;
+    this.cdr.detectChanges();
     setTimeout(() => this.goHome(), 1000);
   }
 }
