@@ -1,30 +1,30 @@
 section {
   width: 90%;
   height: auto;
+  box-sizing: border-box;
+  padding: 2px;
+  border-radius: 5px;
+
   font-family: var(--font-family-Mulish);
   font-size: var(--font-size-18);
   font-weight: var(--font-weight-700);
+
   transition: var(--transition-smooth-and-bg-025);
-  border-radius: 5px;
-  box-sizing: border-box;
-  padding: 2px;
 
   p {
+    margin: 10px 0;
     color: white;
-    margin: 0px;
-    margin: 10px 0px;
   }
 
   app-tertiary-button-component {
     margin-top: 5px;
-    margin-left: 20px;
   }
 }
-
 
 app-checkbox-component ::ng-deep p {
   font-size: var(--font-size-16);
 }
+
 .question-header {
   display: flex;
   align-items: center;
@@ -34,23 +34,27 @@ app-checkbox-component ::ng-deep p {
 .question-body {
   width: 100%;
   margin-top: 10px;
+
   display: flex;
   flex-direction: column;
 
-  div:first-of-type {
+  > div:first-of-type {
     display: flex;
+    align-items: center;
     justify-content: space-between;
   }
 
-  div {
+  > div:not(:first-of-type) {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     flex-direction: row;
-    justify-content: start;
-    margin-bottom: 5px;
+
     gap: 20px;
+    margin-bottom: 5px;
   }
 }
+
 app-input-field-component {
   min-width: 0;
   display: block;
@@ -60,16 +64,51 @@ app-input-field-component {
   width: 90%;
 }
 
+/* Keep answer letters such as "A." on one line. */
+.question-body > div:not(:first-of-type) > p {
+  flex: 0 0 24px;
+  width: 24px;
+  margin: 0;
+
+  white-space: nowrap;
+  line-height: 1;
+  text-align: left;
+}
+
+/* Position Add answer alternately right and left. */
+.question-body .add-answer-position {
+  width: 100%;
+  display: flex;
+
+  gap: 0;
+  margin-top: 12px;
+  margin-bottom: 5px;
+}
+
+.question-body .add-answer-position.add-answer-right {
+  justify-content: flex-end;
+}
+
+.question-body .add-answer-position.add-answer-left {
+  justify-content: flex-start;
+}
+
 @media (max-width: 800px) {
   section {
     width: 100%;
   }
 
-  .question-body div {
+  .question-body > div:not(:first-of-type) {
     gap: 8px;
   }
 
   .answerInput {
     width: calc(100% - 36px);
+  }
+}
+
+@media (max-width: 400px){
+  .create-main {
+    padding: 38px 9px 50px;
   }
 }

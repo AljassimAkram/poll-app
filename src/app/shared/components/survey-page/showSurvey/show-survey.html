@@ -38,14 +38,17 @@
                     .filter((a) => a.question_id === item.id)
                     .map((a) => ({ text: a.answer_text, id: a.id }))
                 "
+                (selectionChanged)="onSelectionChanged(item.id, $event)"
               ></app-question-answer-component>
             }
           </div>
-          <div class="completeSurvey">
-            <app-primary-button-component [icon]="'check'" (click)="completeSurvey()"
-              >Complete Survey</app-primary-button-component
-            >
-          </div>
+          @if (!pastSurvey) {
+            <div class="completeSurvey">
+              <app-primary-button-component [icon]="'check'" (click)="completeSurvey()"
+                >Complete Survey</app-primary-button-component
+              >
+            </div>
+          }
         </div>
       </section>
 

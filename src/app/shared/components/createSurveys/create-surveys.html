@@ -95,12 +95,13 @@
       </div>
 
       <div class="create-main-survey-answers">
-        @for (item of questions; track item; let i = $index) {
+        @for (item of questions; track $index; let i = $index) {
           <app-create-question-component
             (checkboxChange)="onCheck($event, i)"
             (destroy)="removeSection(i)"
             (valueChanged)="onInputChange($event)"
             [questionNumber]="i + 1"
+            [canDelete]="questions.length > 1"
           ></app-create-question-component>
         }
 

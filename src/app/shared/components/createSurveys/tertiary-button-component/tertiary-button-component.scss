@@ -1,42 +1,34 @@
-button {
-    width: 146px;
-    height: 40px;
-    background-color: transparent;
-    border: none;
-    border-radius: var(--border-radius-3);
-    text-align: start;
-    font-family: var(--font-family-nokora);
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-400);
-    transition: var(--transition-smooth-and-bg-025);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-    cursor: pointer;
+.add-answer-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #fff;
+  cursor: pointer;
 
-    >div {
-        width: 115px;
-        height: 24px;
-        border-bottom: 1px solid white;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+  font-family: var(--font-family-Mulish);
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-700);
+  line-height: 1;
 
-        >span {
-            color: white;
+  color: white;
+  transition: color .2s ease, border-color .2s ease;
+}
 
-        }
+.add-answer-btn:hover {
+  color: var(--background-color-medium-yellow);
+  border-bottom-color: var(--background-color-medium-yellow);
+}
 
-        >svg {
-            width: 13px;
-            height: 13px;
-            fill: white;
-        }
-    }
+.plus-icon {
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+  transition: transform .2s ease;
+}
 
-    &:hover {
-        transition: all 0.25s ease;
-        background-color: rgba(250, 245, 254, 0.2);
-    }
+.add-answer-btn:hover .plus-icon {
+  transform: rotate(90deg);
 }

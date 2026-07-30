@@ -31,6 +31,7 @@ export class ShowSurvey {
   questions: any = null;
   answers: any = null;
   counters: number[] = [];
+  selectedAnswersByQuestion: Record<number, number[]> = {};
   channel: any;
   responsivOpenCloseToggle = true;
 
@@ -137,9 +138,15 @@ export class ShowSurvey {
   }
 
   getPercentage(answer: any): number {
-    const clicks = Math.max(0, Number(answer.clicked) || 0);
-    const total = this.counters[answer.question_id] || 0;
+    const selectedIds = this.selectedAnswersByQuestion[answer.question_id] || [];
+    const previewClick = selectedIds.includes(answer.id) ? 1 : 0;
+    const clicks = Math.max(0, Number(answer.clicked) || 0) + previewClick;
+    const total = (this.counters[answer.question_id] || 0) + selectedIds.length;
     return total > 0 ? (clicks / total) * 100 : 0;
+  }
+
+  onSelectionChanged(questionId: number, answerIds: number[]) {
+    this.selectedAnswersByQuestion[questionId] = answerIds;
   }
 
   /**
@@ -170,21 +177,32 @@ export class ShowSurvey {
    * Checks whether at least one answer has votes.
    */
   hasVotes(): boolean {
-    return this.answers?.some((answer: any) => Number(answer.clicked) > 0) ?? false;
+    const databaseVotes = this.answers?.some((answer: any) => Number(answer.clicked) > 0) ?? false;
+    const localVotes = Object.values(this.selectedAnswersByQuestion).some((ids) => ids.length > 0);
+    return databaseVotes || localVotes;
   }
 
   /**
    * Set local Storage,
    */
-  completeSurvey() {
-    const id = this.route.snapshot.paramMap.get('id');
-    let pastSurveys = JSON.parse(localStorage.getItem('pastSurveys') || '[]');
-    if (!pastSurveys.includes(id)) {
-      pastSurveys.push(id);
+  async completeSurvey() {
+    if (this.pastSurvey) return;
+    await this.saveSelectedAnswers();
+    this.markSurveyAsCompleted();
+  }
+
+  private async saveSelectedAnswers() {
+    const answerIds = Object.values(this.selectedAnswersByQuestion).flat();
+    for (const answerId of answerIds) {
+      await this.supabaseService.updatedClickedAnswerInDB(answerId, true);
     }
+  }
+
+  private markSurveyAsCompleted() {
+    const id = this.route.snapshot.paramMap.get('id');
+    const pastSurveys = JSON.parse(localStorage.getItem('pastSurveys') || '[]');
+    if (id && !pastSurveys.includes(id)) pastSurveys.push(id);
     localStorage.setItem('pastSurveys', JSON.stringify(pastSurveys));
-    setTimeout(() => {
-      this.goHome();
-    }, 1000);
+    setTimeout(() => this.goHome(), 1000);
   }
 }

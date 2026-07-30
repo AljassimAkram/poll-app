@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class CreateQuestionComponent {
   @Input() questionNumber = 1;
+  @Input() canDelete = false;
   @Output() valueChanged = new EventEmitter<{ field: string; value: string }>();
   @Output() destroy = new EventEmitter<void>();
   questions = [1, 2];

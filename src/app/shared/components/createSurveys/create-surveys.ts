@@ -96,6 +96,7 @@ export class CreateSurveys {
 
   /** Removes a question from the survey. @param index Index of the question that should be removed. */
   removeSection(index: number): void {
+    if (this.questions.length <= 1) return;
     this.questions.splice(index, 1);
   }
 
