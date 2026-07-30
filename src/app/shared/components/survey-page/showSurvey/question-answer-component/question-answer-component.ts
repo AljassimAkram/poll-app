@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CheckboxComponent } from '../../../createSurveys/checkbox-component/checkbox-component';
-import { SupabaseServieces } from '../../../../services/supabase-servieces';
 
 @Component({
   selector: 'app-question-answer-component',
@@ -14,14 +13,11 @@ export class QuestionAnswerComponent {
   @Input() questionMoreAnswers = true;
   @Input() questions: { text: string; id: number }[] = [];
   @Input() disabled = false;
+
+  @Output() selectionChanged = new EventEmitter<number[]>();
+
   selectedAnswer: number | null = null;
   selectedAnswers: number[] = [];
-
-  /**
-   * Creates the component.
-   * Uses Supabase service.
-   */
-  constructor(private supabaseService: SupabaseServieces) {}
 
   /**
    * Converts number to letter.
@@ -31,34 +27,46 @@ export class QuestionAnswerComponent {
     return String.fromCharCode(65 + i);
   }
 
-  async onSingleAnswerSelected(checked: boolean, answerId: number) {
-    if (!checked && this.selectedAnswer === answerId) {
-      await this.supabaseService.updatedClickedAnswerInDB(answerId, false);
-      this.selectedAnswer = null;
-    } else if (checked) {
-      if (this.selectedAnswer !== null) {
-        await this.supabaseService.updatedClickedAnswerInDB(this.selectedAnswer, false);
-      }
-
-      this.selectedAnswer = answerId;
-      await this.supabaseService.updatedClickedAnswerInDB(answerId, true);
-    }
+  /**
+   * Selects or removes one answer locally.
+   * Nothing is saved in Supabase here.
+   */
+  onSingleAnswerSelected(checked: boolean, answerId: number) {
+    this.selectedAnswer = checked ? answerId : null;
+    this.emitSingleSelection();
   }
 
   /**
-   * Handles single answer selection.
-   * Removes previous selection in database.
-   * Sets new selected answer.
+   * Selects or removes multiple answers locally.
+   * Nothing is saved in Supabase here.
    */
-  async onMultipleAnswerSelected(checked: boolean, answerId: number) {
+  onMultipleAnswerSelected(checked: boolean, answerId: number) {
     if (checked) {
-      if (!this.selectedAnswers.includes(answerId)) {
-        this.selectedAnswers.push(answerId);
-        await this.supabaseService.updatedClickedAnswerInDB(answerId, true);
-      }
+      this.addMultipleAnswer(answerId);
     } else {
-      this.selectedAnswers = this.selectedAnswers.filter((id) => id !== answerId);
-      await this.supabaseService.updatedClickedAnswerInDB(answerId, false);
+      this.removeMultipleAnswer(answerId);
     }
+
+    this.selectionChanged.emit([...this.selectedAnswers]);
+  }
+
+  private emitSingleSelection() {
+    const selectedIds = this.selectedAnswer !== null
+      ? [this.selectedAnswer]
+      : [];
+
+    this.selectionChanged.emit(selectedIds);
+  }
+
+  private addMultipleAnswer(answerId: number) {
+    if (!this.selectedAnswers.includes(answerId)) {
+      this.selectedAnswers.push(answerId);
+    }
+  }
+
+  private removeMultipleAnswer(answerId: number) {
+    this.selectedAnswers = this.selectedAnswers.filter(
+      (id) => id !== answerId
+    );
   }
 }

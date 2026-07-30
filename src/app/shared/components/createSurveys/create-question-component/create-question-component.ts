@@ -61,9 +61,11 @@ export class CreateQuestionComponent {
    * Only allows removal if index is 2 or higher.
    */
   deleteQuestion(i: number) {
-    if (i >= 2) {
-      this.questions.splice(i, 1);
+    if (this.questions.length <= 1) {
+      return;
     }
+
+    this.questions.splice(i, 1);
   }
 
   /**

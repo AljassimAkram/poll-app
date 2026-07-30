@@ -141,7 +141,12 @@ export class CreateSurveys {
   /** Checks whether the end date exists and is not in the past. @returns True when the end date is valid. */
   private isEndDateValid(): boolean {
     const endDate = this.newSurvey.SetEndDate;
-    return Boolean(endDate && endDate >= this.getToday());
+
+    if (!endDate) {
+      return true;
+    }
+
+    return endDate >= this.getToday();
   }
 
   /** Validates every question in the survey. @returns The first question error or an empty string. */
@@ -225,7 +230,9 @@ export class CreateSurveys {
 
   /** Saves all answers belonging to a question. @param surveyId ID of the related survey. */
   private async saveAnswers(
-    surveyId: string, questionId: string, answers: string[]
+    surveyId: string,
+    questionId: string,
+    answers: string[],
   ): Promise<void> {
     for (const answer of answers) {
       await this.supabaseService.createAnswer({
