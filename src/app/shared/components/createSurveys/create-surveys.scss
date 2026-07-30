@@ -160,10 +160,10 @@ app-input-field-component {
 }
 
 .addNext {
-  grid-column: 1 / -1;
+  grid-column: auto;
   justify-self: start;
   align-self: start;
-  margin-top: 16px;
+  margin-top: 35px;
 }
 
 /* The form grows with its content; only the browser page scrolls. */
@@ -280,6 +280,7 @@ app-input-field-component {
     align-items: center;
     justify-content: center;
     width: 100%;
+    margin-top: 16px;
   }
 
   .create-main-bottom {
